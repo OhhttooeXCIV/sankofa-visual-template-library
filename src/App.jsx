@@ -8,6 +8,7 @@ export function App() {
   const [selectedId, setSelectedId] = useState(COMPONENT_REGISTRY[0].id);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
+  const [activeView, setActiveView] = useState('overview');
 
   // Categories list
   const categories = useMemo(() => {
@@ -46,10 +47,12 @@ export function App() {
         activeCategory={activeCategory}
         onSelectCategory={setActiveCategory}
         categories={categories}
+        activeView={activeView}
+        onSelectView={setActiveView}
       />
 
       <main>
-        <section className="relative isolate overflow-hidden border-b border-amber-500/10 bg-[radial-gradient(circle_at_70%_20%,rgba(245,158,11,0.16),transparent_35%),linear-gradient(135deg,#090d16_0%,#120e0a_55%,#090d16_100%)]">
+        {activeView === 'overview' && <section className="relative isolate overflow-hidden border-b border-amber-500/10 bg-[radial-gradient(circle_at_70%_20%,rgba(245,158,11,0.16),transparent_35%),linear-gradient(135deg,#090d16_0%,#120e0a_55%,#090d16_100%)]">
           <div className="mx-auto grid w-full max-w-7xl items-center gap-10 px-5 py-14 sm:px-8 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:px-10 lg:py-24">
             <div className="relative z-10 max-w-2xl">
               <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-amber-300">
@@ -62,32 +65,40 @@ export function App() {
                 A reusable React and Tailwind system for commerce, education, operations, and content teams. Start with accessible building blocks, then shape them into experiences that feel distinctly yours.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                <a href="#component-library" className="inline-flex items-center justify-center rounded-xl bg-amber-400 px-5 py-3 text-sm font-bold text-slate-950 shadow-lg shadow-amber-500/20 transition hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-300 focus:ring-offset-2 focus:ring-offset-slate-950">
+                <button type="button" onClick={() => setActiveView('library')} className="inline-flex items-center justify-center rounded-xl bg-amber-400 px-5 py-3 text-sm font-bold text-slate-950 shadow-lg shadow-amber-500/20 transition hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-300 focus:ring-offset-2 focus:ring-offset-slate-950">
                   Explore the library <span aria-hidden="true" className="ml-2">↓</span>
-                </a>
-                <span className="text-sm text-slate-400">Responsive by default · Built for reuse</span>
+                </button>
+                <span className="text-sm text-slate-400">Portable primitives · Clear docs · Responsive by default</span>
               </div>
             </div>
             <div className="relative mx-auto w-full max-w-xl lg:justify-self-end">
               <div aria-hidden="true" className="absolute -inset-8 rounded-full bg-amber-500/10 blur-3xl" />
-              <picture className="relative block overflow-hidden rounded-3xl border border-amber-300/20 bg-black/40 shadow-2xl shadow-amber-950/40">
+              <picture className="relative block overflow-hidden rounded-3xl border border-amber-300/20 bg-black/70 p-3 shadow-2xl shadow-amber-950/40 sm:p-5">
                 <source srcSet="/sankofa-digital-hero.webp" type="image/webp" />
-                <img src="/sankofa-digital-hero.webp" alt="Sankofa Digital gold bird emblem and wordmark" className="aspect-[4/3] w-full object-cover object-center" width="1600" height="960" fetchPriority="high" />
+                <img src="/sankofa-digital-hero.webp" alt="Sankofa Digital gold bird emblem and wordmark" className="aspect-[16/10] w-full rounded-2xl object-contain object-center" width="1600" height="960" fetchPriority="high" />
               </picture>
             </div>
           </div>
-        </section>
+        </section>}
 
-        <section id="component-library" aria-labelledby="library-heading" className="mx-auto w-full max-w-7xl px-5 pb-4 pt-12 sm:px-8 lg:px-10 lg:pt-16">
+        {activeView === 'overview' && <section aria-labelledby="library-heading" className="mx-auto w-full max-w-7xl px-5 pb-16 pt-12 sm:px-8 lg:px-10 lg:pt-16">
           <div className="mb-8 max-w-3xl">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-amber-400">Introduction</p>
-            <h2 id="library-heading" className="mt-2 text-3xl font-semibold tracking-tight text-white sm:text-4xl">A practical starting point for your next interface.</h2>
-            <p className="mt-3 text-base leading-7 text-slate-400">Browse live previews, read the implementation notes, and copy the pieces you need. Every entry is designed to be understandable in isolation and adaptable to a real product.</p>
+            <h2 id="library-heading" className="mt-2 text-3xl font-semibold tracking-tight text-white sm:text-4xl">A shared shelf of interface patterns, not a single product.</h2>
+            <p className="mt-3 text-base leading-7 text-slate-400">Sankofa is an onboarding layer for developers: each entry explains the problem it solves, shows a live preview, documents the contract, and makes portability explicit. Use the library across commerce, operations, education, content, and internal tools without inheriting another project’s business rules.</p>
+            <div className="mt-8 grid gap-4 sm:grid-cols-3">
+              {[
+                ['01', 'Understand', 'Start with the why, use cases, and quality contract.'],
+                ['02', 'Compose', 'Combine primitives into a route or product surface.'],
+                ['03', 'Adapt', 'Copy the code and replace data, routing, and brand tokens.'],
+              ].map(([number, title, text]) => <div key={number} className="rounded-2xl border border-slate-800 bg-slate-900/50 p-5"><span className="text-xs font-mono text-amber-400">{number}</span><h3 className="mt-3 text-sm font-semibold text-white">{title}</h3><p className="mt-2 text-xs leading-6 text-slate-400">{text}</p></div>)}
+            </div>
           </div>
-        </section>
+          <button type="button" onClick={() => setActiveView('library')} className="rounded-xl border border-amber-400/40 bg-amber-400/10 px-4 py-2.5 text-sm font-semibold text-amber-300 transition hover:bg-amber-400/20">Start browsing components →</button>
+        </section>}
 
         {/* Main Showcase Workspace */}
-        <div className="flex-1 max-w-7xl w-full mx-auto flex flex-col lg:flex-row overflow-hidden">
+        {activeView === 'library' && <div id="component-library" className="flex-1 max-w-7xl w-full mx-auto flex flex-col lg:flex-row overflow-hidden">
         {/* Left Category Sidebar */}
         <Sidebar
           components={filteredComponents}
@@ -97,7 +108,7 @@ export function App() {
 
         {/* Right Detail Viewer */}
         <ComponentViewer component={activeComponent} />
-        </div>
+        </div>}
       </main>
     </div>
   );

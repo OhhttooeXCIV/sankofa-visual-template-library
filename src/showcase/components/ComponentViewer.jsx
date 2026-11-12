@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LivePreviewContainer from './LivePreviewContainer';
 import CodeBlock from './CodeBlock';
 import PropsTable from './PropsTable';
@@ -8,6 +8,11 @@ export const ComponentViewer = ({ component }) => {
   const [activeTab, setActiveTab] = useState('preview');
   const [codeType, setCodeType] = useState('export'); // 'export' or 'main'
   const [copiedNotification, setCopiedNotification] = useState(false);
+
+  useEffect(() => {
+    setActiveTab('preview');
+    setCodeType('export');
+  }, [component?.id]);
 
   if (!component) {
     return (
@@ -78,6 +83,10 @@ export const ComponentViewer = ({ component }) => {
           {tabs.map((tab) => (
             <button
               key={tab.id}
+              type="button"
+              role="tab"
+              aria-selected={activeTab === tab.id}
+              aria-controls={`component-panel-${tab.id}`}
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
                 activeTab === tab.id
@@ -94,7 +103,7 @@ export const ComponentViewer = ({ component }) => {
 
       {/* Tab Panels */}
       {activeTab === 'preview' && (
-        <div className="rounded-3xl border border-slate-800 bg-slate-900/40 p-6 sm:p-8 shadow-xl">
+        <div id="component-panel-preview" role="tabpanel" className="rounded-3xl border border-slate-800 bg-slate-900/40 p-6 sm:p-8 shadow-xl">
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-800">
             <div>
               <h3 className="text-sm font-semibold text-white">Interactive Playground</h3>
@@ -106,7 +115,7 @@ export const ComponentViewer = ({ component }) => {
       )}
 
       {activeTab === 'explanation' && (
-        <div className="space-y-6">
+        <div id="component-panel-explanation" role="tabpanel" className="space-y-6">
           {/* Architectural Overview */}
           <div className="p-6 sm:p-8 rounded-3xl border border-slate-800 bg-slate-900/40 shadow-xl space-y-4">
             <h3 className="text-lg font-serif font-semibold text-white flex items-center gap-2">
@@ -172,7 +181,7 @@ export const ComponentViewer = ({ component }) => {
       )}
 
       {activeTab === 'props' && (
-        <div className="space-y-6">
+        <div id="component-panel-props" role="tabpanel" className="space-y-6">
           <div className="p-6 sm:p-8 rounded-3xl border border-slate-800 bg-slate-900/40 shadow-xl space-y-4">
             <h3 className="text-lg font-serif font-semibold text-white flex items-center gap-2">
               <Sliders size={18} className="text-amber-400" />
@@ -198,7 +207,7 @@ export const ComponentViewer = ({ component }) => {
       )}
 
       {activeTab === 'export' && (
-        <div className="space-y-6">
+        <div id="component-panel-export" role="tabpanel" className="space-y-6">
           {/* Sub Tab Buttons */}
           <div className="flex items-center gap-2">
             <button

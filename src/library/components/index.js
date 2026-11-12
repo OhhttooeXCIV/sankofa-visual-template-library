@@ -30,6 +30,7 @@ export { ApprovedImage } from '../commerce/ApprovedImage';
 export { ExpandableSection } from '../learning/ExpandableSection';
 export { SingleOpenAccordion } from '../learning/SingleOpenAccordion';
 export { LearnerProgressRibbon } from '../learning/LearnerProgressRibbon';
+export { DataTableShell, StatusBadge, WorkflowStepper, ExportMenu, InlineFeedback } from '../operations';
 export {
   LegalPolicyPage,
   LegalFooterLinks,

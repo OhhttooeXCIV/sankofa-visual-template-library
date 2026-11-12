@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Card, FeatureCard, SiteFooter, CommandPalette, ActionFeedback, CommerceRouteHero, ProductDetail, ApprovedImage, ExpandableSection, SingleOpenAccordion, LearnerProgressRibbon } from '../../library/components';
+import { Button, Card, FeatureCard, SiteFooter, CommandPalette, ActionFeedback, CommerceRouteHero, ProductDetail, ApprovedImage, ExpandableSection, SingleOpenAccordion, LearnerProgressRibbon, DataTableShell, StatusBadge, WorkflowStepper, ExportMenu, InlineFeedback } from '../../library/components';
 
 const products = [{ id: 'one', name: 'Sunflower Creamed Honey', category: 'Commerce', price: 'R120', description: 'A reusable product detail example.', stock: 4 }];
 
@@ -21,6 +21,12 @@ export default function ImportedComponentPreview({ componentId }) {
     case 'expandable-section': return <ExpandableSection title="Expandable content" description="Native disclosure with a configurable initial state." defaultOpen>Children render only while the section is open.</ExpandableSection>;
     case 'single-open-accordion': return <SingleOpenAccordion openItemId={openItemId} onOpenItemChange={setOpenItemId} items={[{ id: 'one', label: 'First item', content: 'Only one panel is open at a time.' }, { id: 'two', label: 'Second item', content: 'Controlled state makes this easy to integrate with external routing or analytics.' }]} />;
     case 'learner-progress-ribbon': return <LearnerProgressRibbon items={[{ label: 'Start', state: 'completed' }, { label: 'Practice', state: 'active' }, { label: 'Review', state: 'pending' }, { label: 'Complete', state: 'pending' }]} />;
+    case 'status-badge': return <div className="flex flex-wrap gap-3"><StatusBadge status="success" /><StatusBadge status="in progress" tone="info" /><StatusBadge status="Needs review" tone="warning" /><StatusBadge status="Blocked" /></div>;
+    case 'data-table-shell': return <DataTableShell columns={[{ key: 'name', label: 'Name' }, { key: 'state', label: 'State' }, { key: 'owner', label: 'Owner' }]} rows={[{ id: 1, name: 'Registration', state: 'Ready', owner: 'Amina' }, { id: 2, name: 'Review queue', state: 'In progress', owner: 'Thabo' }]} />;
+    case 'workflow-stepper': return <WorkflowStepper current={1} steps={[{ label: 'Discover', description: 'Define the need' }, { label: 'Build', description: 'Compose the surface' }, { label: 'Ship', description: 'Verify and release' }]} />;
+    case 'export-menu': return <ExportMenu onExport={(format) => setFeedback({ tone: 'success', message: `${format} export requested.` })} />;
+    case 'inline-feedback': return <div className="space-y-3"><InlineFeedback tone="success" title="Changes saved" message="This persistent status can remain beside the action that caused it." /><InlineFeedback tone="warning" title="Review needed" message="Use an inline message when the user needs context before continuing." /></div>;
+    case 'toast-notification-system': return <div className="space-y-3"><ActionFeedback state={feedback} /><Button size="sm" onClick={() => setFeedback({ tone: 'success', message: 'A bounded toast was queued.' })}>Trigger notification</Button></div>;
     default: return null;
   }
 }

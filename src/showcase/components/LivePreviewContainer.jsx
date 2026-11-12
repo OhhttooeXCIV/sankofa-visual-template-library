@@ -37,7 +37,7 @@ export const LivePreviewContainer = ({ componentId }) => {
   // Custom hook test
   useScrollLock(isScrollLocked);
 
-  const importedPreviewIds = ['button', 'card', 'feature-card', 'site-footer', 'command-palette', 'action-feedback', 'commerce-route-hero', 'product-detail', 'approved-image', 'expandable-section', 'single-open-accordion', 'learner-progress-ribbon'];
+  const importedPreviewIds = ['button', 'card', 'feature-card', 'site-footer', 'command-palette', 'action-feedback', 'commerce-route-hero', 'product-detail', 'approved-image', 'expandable-section', 'single-open-accordion', 'learner-progress-ribbon', 'status-badge', 'workflow-stepper', 'export-menu', 'inline-feedback', 'toast-notification-system', 'data-table-shell'];
   if (importedPreviewIds.includes(componentId)) {
     return <ImportedComponentPreview componentId={componentId} />;
   }
