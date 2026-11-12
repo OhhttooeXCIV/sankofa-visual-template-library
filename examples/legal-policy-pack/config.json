@@ -1,0 +1,15 @@
+{
+  "projectType": "ecommerce",
+  "projectName": "Example South African Store",
+  "websiteUrl": "https://example.co.za",
+  "legalEntityName": "Example (Pty) Ltd",
+  "contactEmail": "legal@example.co.za",
+  "address": "Johannesburg, South Africa",
+  "effectiveDate": "2026-11-03",
+  "version": "1.0",
+  "governingLaw": "The law of the Republic of South Africa",
+  "privacyContact": "privacy@example.co.za",
+  "analytics": ["[YOUR ANALYTICS PROVIDER]"],
+  "cookies": ["essential", "preferences", "measurement"],
+  "footerLinks": {}
+}

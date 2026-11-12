@@ -1,10 +1,52 @@
+import { IMPORTED_COMPONENT_DESCRIPTORS } from './importedRegistry.js';
+
 /**
  * Sankofa Visual Template Library - Comprehensive Registry
  * Contains live demo props, documentation, usage guides, use cases,
  * other customization options, and zero-friction export code with main.jsx integration.
  */
 
-export const COMPONENT_REGISTRY = [
+const RAW_COMPONENT_REGISTRY = [
+  ...IMPORTED_COMPONENT_DESCRIPTORS,
+  {
+    id: 'legal-policy-kit',
+    name: 'South African Legal Policy Kit',
+    category: 'Compliance & Legal',
+    tagline: 'Typed, customizable policy pages and footer links for South African websites.',
+    explanation: 'A reusable policy system for POPIA/PAIA, ECTA, CPA, cookies, accessibility, disclaimers, and complaints. It supports typed project presets, declarative footer links, conditional commerce sections, and deterministic HTML, Markdown, and DOCX policy exports. The generated wording is a customizable draft and requires qualified legal review before publication.',
+    usage: 'Import `LegalPolicyPage`, `LegalFooterLinks`, and `PolicyCustomizer` from `src/library/legal`. Pass a validated project configuration and set `policyId` when rendering one policy route.',
+    useCases: ['Public informational websites and marketing sites.', 'South African e-commerce storefronts with conditional consumer terms.', 'SaaS and digital-service websites.', 'Internal, education, and student-facing applications requiring configurable policy navigation.'],
+    otherOptions: ['Choose `projectType="informational" | "ecommerce" | "saas" | "internal" | "education"`.', 'Override footer labels, order, visibility, routes, and external links through `footerLinks`.', 'Generate the combined handbook from the shared configuration in `examples/legal-policy-pack`.'],
+    props: [
+      { name: 'config', type: 'LegalPolicyConfig', default: '{}', required: true, description: 'Project identity, jurisdiction, contact, processing, and policy settings' },
+      { name: 'policyId', type: 'string', default: 'undefined', required: false, description: 'Render one policy section or the complete handbook' },
+      { name: 'className', type: 'string', default: "''", required: false, description: 'Additional styling classes' },
+    ],
+    exportCode: `import React from 'react';
+import { LegalPolicyPage, LegalFooterLinks } from './library/legal';
+
+const config = {
+  projectType: 'ecommerce',
+  projectName: 'Example Store',
+  websiteUrl: 'https://example.co.za',
+  legalEntityName: 'Example (Pty) Ltd',
+  contactEmail: 'legal@example.co.za',
+  address: 'Johannesburg, South Africa',
+  effectiveDate: '2026-11-03',
+  version: '1.0',
+  governingLaw: 'The law of the Republic of South Africa',
+  privacyContact: 'privacy@example.co.za',
+  analytics: ['[YOUR ANALYTICS PROVIDER]'],
+  cookies: ['essential', 'preferences'],
+};
+
+export default function LegalRoute() {
+  return <LegalPolicyPage config={config} />;
+}`,
+    mainJsxCode: `import { LegalFooterLinks } from './library/legal';
+
+<footer><LegalFooterLinks config={config} /></footer>`,
+  },
   {
     id: 'breadcrumbs',
     name: 'Breadcrumbs Navigation',
@@ -913,3 +955,18 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 );`,
   },
 ];
+
+export const COMPONENT_REGISTRY = RAW_COMPONENT_REGISTRY.map((entry) => ({
+  sourceProject: 'sankofa-visual-template-library',
+  sourcePath: 'src/library/docs/registry.js',
+  adaptationNotes: 'Native library component retained and documented for reuse.',
+  responsiveBehavior: 'Responsive behavior documented in the live preview and usage notes.',
+  accessibility: 'Review semantic structure and keyboard behavior in the preview before production use.',
+  dependencies: ['react'],
+  previewControls: ['default', 'mobile/desktop viewport'],
+  config: {},
+  customization: [],
+  knownLimitations: 'Confirm project-specific content, data, and accessibility requirements before shipping.',
+  testPath: `src/library/__tests__/${entry.id}.test.jsx`,
+  ...entry,
+}));

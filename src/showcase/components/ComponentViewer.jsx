@@ -127,6 +127,27 @@ export const ComponentViewer = ({ component }) => {
             </div>
           </div>
 
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/40 p-6 shadow-xl">
+              <h3 className="text-sm font-semibold text-white">Source & portability</h3>
+              <dl className="mt-4 space-y-3 text-xs">
+                <div><dt className="text-slate-500">Source project</dt><dd className="mt-1 text-slate-200">{component.sourceProject}</dd></div>
+                <div><dt className="text-slate-500">Source path</dt><dd className="mt-1 break-all font-mono text-slate-300">{component.sourcePath}</dd></div>
+                <div><dt className="text-slate-500">Adaptation</dt><dd className="mt-1 leading-relaxed text-slate-300">{component.adaptationNotes}</dd></div>
+                <div><dt className="text-slate-500">Dependencies</dt><dd className="mt-1 text-slate-300">{component.dependencies?.join(', ') || 'None documented'}</dd></div>
+              </dl>
+            </div>
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/40 p-6 shadow-xl">
+              <h3 className="text-sm font-semibold text-white">Quality contract</h3>
+              <dl className="mt-4 space-y-3 text-xs">
+                <div><dt className="text-slate-500">Responsive behavior</dt><dd className="mt-1 leading-relaxed text-slate-300">{component.responsiveBehavior}</dd></div>
+                <div><dt className="text-slate-500">Accessibility</dt><dd className="mt-1 leading-relaxed text-slate-300">{component.accessibility}</dd></div>
+                <div><dt className="text-slate-500">Preview controls</dt><dd className="mt-1 text-slate-300">{component.previewControls?.join(', ') || 'Default preview'}</dd></div>
+                <div><dt className="text-slate-500">Test path</dt><dd className="mt-1 break-all font-mono text-slate-300">{component.testPath}</dd></div>
+              </dl>
+            </div>
+          </div>
+
           {/* Real-World Use Cases */}
           <div className="p-6 sm:p-8 rounded-3xl border border-slate-800 bg-slate-900/40 shadow-xl space-y-4">
             <h3 className="text-lg font-serif font-semibold text-white flex items-center gap-2">

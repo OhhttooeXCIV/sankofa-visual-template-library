@@ -1,0 +1,7 @@
+import React from 'react';
+
+export function CommerceRouteHero({ pageLabel, eyebrow, title, description, primaryAction, secondaryAction, proofPoints = [], visualTitle = 'Commerce route', tone = 'earth' }) {
+  return <section className={`grid gap-8 rounded-3xl border p-6 sm:p-10 md:grid-cols-[1.15fr_.85fr] ${tone === 'gold' ? 'border-amber-500/30 bg-amber-500/10' : 'border-slate-800 bg-slate-900/60'}`} aria-labelledby="commerce-route-title"><div><p className="text-xs font-bold uppercase tracking-widest text-amber-400">{pageLabel} · {eyebrow}</p><h1 id="commerce-route-title" className="mt-3 text-3xl font-serif font-bold text-white sm:text-5xl">{title}</h1><p className="mt-4 max-w-xl text-slate-300">{description}</p><div className="mt-6 flex flex-wrap gap-3"><a href={primaryAction.href} className="rounded-xl bg-amber-500 px-4 py-2 text-sm font-semibold text-slate-950">{primaryAction.label}</a><a href={secondaryAction.href} className="rounded-xl border border-slate-700 px-4 py-2 text-sm font-semibold text-white">{secondaryAction.label}</a></div><ul className="mt-6 grid gap-2 text-sm text-slate-400 sm:grid-cols-2">{proofPoints.map((point) => <li key={point}>✓ {point}</li>)}</ul></div><div className="flex min-h-56 items-end rounded-2xl border border-white/10 bg-slate-950/60 p-5"><div><p className="text-xs uppercase tracking-widest text-slate-500">Preview visual</p><p className="mt-2 text-xl font-semibold text-white">{visualTitle}</p></div></div></section>;
+}
+
+export default CommerceRouteHero;

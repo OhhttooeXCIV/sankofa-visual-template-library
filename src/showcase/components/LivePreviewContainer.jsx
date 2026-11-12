@@ -19,6 +19,7 @@ import {
   useScrollLock,
 } from '../../library/components';
 import { Play, Sparkles, Image, Bell, Layers, CheckCircle } from 'lucide-react';
+import ImportedComponentPreview from './ImportedComponentPreview';
 
 export const LivePreviewContainer = ({ componentId }) => {
   // Demo states
@@ -35,6 +36,11 @@ export const LivePreviewContainer = ({ componentId }) => {
 
   // Custom hook test
   useScrollLock(isScrollLocked);
+
+  const importedPreviewIds = ['button', 'card', 'feature-card', 'site-footer', 'command-palette', 'action-feedback', 'commerce-route-hero', 'product-detail', 'approved-image', 'expandable-section', 'single-open-accordion', 'learner-progress-ribbon'];
+  if (importedPreviewIds.includes(componentId)) {
+    return <ImportedComponentPreview componentId={componentId} />;
+  }
 
   const addToast = (variant, title, message) => {
     const id = Date.now().toString();

@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2026-11-03",
+  "policy": "Source applications remain unchanged. Imported components are normalized to React 19 and Tailwind conventions.",
+  "entries": [
+    { "id": "button", "sourceProject": "phekong-commerce-platform", "sourcePath": "src/components/ui/Button.tsx", "adaptation": "Removed project CSS and converted variants to library Tailwind tokens." },
+    { "id": "card", "sourceProject": "phekong-commerce-platform", "sourcePath": "src/components/ui/Card.tsx", "adaptation": "Removed project CSS and retained semantic article/header/body/footer structure." },
+    { "id": "feature-card", "sourceProject": "phekong-commerce-platform", "sourcePath": "src/components/ui/FeatureCard.tsx", "adaptation": "Added optional icon and library surface styling." },
+    { "id": "application-shell", "sourceProject": "phekong-commerce-platform", "sourcePath": "src/components/shell/ApplicationShell.tsx", "adaptation": "Removed Next.js routing, product state, translations, and app-specific shell logic." },
+    { "id": "site-footer", "sourceProject": "phekong-commerce-platform", "sourcePath": "src/components/shell/SiteFooter.tsx", "adaptation": "Replaced Next.js Link with configurable anchors and legal-link manifest support." },
+    { "id": "public-route-surface", "sourceProject": "phekong-commerce-platform", "sourcePath": "src/components/routes/PublicRouteSurface.tsx", "adaptation": "Reused route-state pattern with library Button, Card, and ActionFeedback." },
+    { "id": "action-feedback", "sourceProject": "phekong-commerce-platform", "sourcePath": "src/components/ui/ActionFeedback.tsx", "adaptation": "Converted tone/status pattern to Tailwind and portable state props." },
+    { "id": "commerce-route-hero", "sourceProject": "phekong-commerce-platform", "sourcePath": "src/components/navigation/CommerceRouteHero.tsx", "adaptation": "Removed Next.js Link and route-specific artwork; retained responsive commerce hero pattern." },
+    { "id": "product-catalogue", "sourceProject": "phekong-commerce-platform", "sourcePath": "src/components/catalogue/ProductCatalogue.tsx", "adaptation": "Reduced to portable product list/search/state contract." },
+    { "id": "product-detail", "sourceProject": "phekong-commerce-platform", "sourcePath": "src/components/products/ProductDetail.tsx", "adaptation": "Removed repository, image registry, and Next.js dependencies; retained availability and feedback behavior." },
+    { "id": "approved-image", "sourceProject": "phekong-commerce-platform", "sourcePath": "src/components/media/ApprovedImage.tsx", "adaptation": "Replaced next/image with portable img fallback behavior." },
+    { "id": "command-palette", "sourceProject": "Sankofa_Edu_Labs_Computer_Mastery", "sourcePath": "src/components/CommandPalette.tsx", "adaptation": "Removed subject/auth dependencies; added generic item list and keyboard shortcut props." },
+    { "id": "expandable-section", "sourceProject": "Sankofa_Edu_Labs_Computer_Mastery", "sourcePath": "src/components/ExpandableSection.tsx", "adaptation": "Retained native details disclosure and converted styling to library tokens." },
+    { "id": "single-open-accordion", "sourceProject": "Sankofa_Edu_Labs_Computer_Mastery", "sourcePath": "src/components/SingleOpenAccordion.tsx", "adaptation": "Retained controlled single-open accessibility contract and normalized styling." },
+    { "id": "learner-progress-ribbon", "sourceProject": "Sankofa_Edu_Labs_Computer_Mastery", "sourcePath": "src/components/LearnerProgressRibbon.tsx", "adaptation": "Generalized learner-specific progress into a reusable labeled progress ribbon." }
+  ],
+  "duplicates": [
+    { "behavior": "Safety and commercial component variants", "projects": ["Umkhuseli_The_Protector", "Umk_Commercial", "Umk_Commercial_Lib-"], "decision": "Excluded from the 30-entry UI set because the variants contain domain-specific safety, service, and app-state logic." }
+  ]
+}
