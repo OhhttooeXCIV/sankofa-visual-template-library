@@ -10,7 +10,7 @@ export const PropsTable = ({ props = [] }) => {
   }
 
   return (
-    <div className="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-900/60">
+    <div role="region" aria-label="Component properties" tabIndex={0} className="sankofa-scroll-region rounded-2xl border border-slate-800 bg-slate-900/60">
       <table className="w-full text-left text-xs sm:text-sm">
         <thead className="bg-slate-950/80 border-b border-slate-800 text-[11px] uppercase tracking-wider text-slate-400">
           <tr>

@@ -1,0 +1,55 @@
+export const componentChecks = {
+  'status-badge': 'Check long statuses at narrow widths. Keep the status readable without relying on colour.',
+  'data-table-shell': 'Scroll the table independently and sort from the keyboard. Load or cache records in the host.',
+  'workflow-stepper': 'Keep the active step visible and keep progression rules in the host.',
+  'export-menu': 'Keep export actions reachable by touch. The host decides which formats can be generated offline.',
+  'inline-feedback': 'Place persistent status next to its action and announce state changes.',
+  'toast-notification-system': 'Keep messages above fixed navigation. Use persistent feedback for important offline state.',
+  button: 'Keep the target reachable and show immediate loading feedback for submitted actions.',
+  card: 'Let long labels and footer actions wrap at narrow sizes.',
+  'feature-card': 'Stack cards on compact screens and preserve reading order.',
+  'site-footer': 'Stack link groups and leave clearance for fixed navigation.',
+  'command-palette': 'Provide a touch trigger and keep results scrollable when the keyboard is open.',
+  'action-feedback': 'Distinguish local progress, errors, and confirmed outcomes in host actions.',
+  'commerce-route-hero': 'Stack actions and use a locally available visual or an explicit fallback.',
+  'product-detail': 'Keep quantity and purchase actions reachable. The host determines availability and acknowledgement.',
+  'approved-image': 'Provide a visible fallback and use a local asset for the offline demo.',
+  'expandable-section': 'Use the native disclosure and let expanded content scroll with the page.',
+  'single-open-accordion': 'Keep headers keyboard-accessible and let long section titles wrap.',
+  'learner-progress-ribbon': 'Keep step labels readable and save learner progress through a host adapter.',
+  'legal-policy-kit': 'Keep long sections readable with native anchors. Review host data handling before publishing.',
+  breadcrumbs: 'Preserve the current location as the trail contracts and keep the ancestor links actionable.',
+  container: 'Allow content to shrink inside a grid and keep a consistent mobile gutter.',
+  section: 'Keep heading order and use natural page scrolling.',
+  'product-card': 'Keep the card actionable at narrow widths. Preview photography requires a connection.',
+  modal: 'Contain focus and scroll long content inside the dialog, then return focus to its trigger.',
+  'image-modal': 'Keep zoom and close visible. Preview photography requires a connection.',
+  'video-modal': 'Keep controls visible on short screens. The embedded video requires a connection.',
+  toast: 'Keep feedback within the viewport and respect the reduced-motion preference.',
+  'impact-tracker': 'Stack metrics at narrow widths and avoid frequent announcements while values change.',
+  'founder-story': 'Stack the text and portrait. The example uses a remote portrait.',
+  'featured-recipes': 'Stack cards and keep the reading order. The example uses remote photographs.',
+  'featured-reviews': 'Let review cards reflow with long text and larger text settings.',
+  'featured-gifts': 'Keep the action visible under long content. The example uses remote photographs.',
+  'education-hub': 'Keep headings and actions in the reading order on one-column layouts.',
+  'recipes-page': 'Keep filters reachable after scrolling. The example uses remote photographs.',
+  'reviews-page': 'Keep controls and feedback visible. The host handles review submission.',
+  'use-scroll-lock': 'Lock the document while overlays are open and restore the previous body styles on final close.',
+  'application-shell': 'Use accessible route links and a focusable main landmark. Reserve safe-area space on mobile.',
+  drawer: 'Keep the body independently scrollable and keep footer actions visible at short viewport heights.',
+  'responsive-navigation': 'Use the same real links for a mobile bottom bar and a wide-screen navigation rail.',
+  'offline-save-button': 'Show saved status only after local storage succeeds and give users a way to remove their copy.',
+  'offline-sync-status': 'Present queued and acknowledged operations as distinct states. Expose a retry when the host supports it.',
+};
+
+const networkPreviews = new Set([
+  'product-card', 'image-modal', 'video-modal', 'founder-story',
+  'featured-recipes', 'featured-gifts', 'recipes-page',
+]);
+
+export function componentGuidance(component) {
+  return {
+    description: componentChecks[component.id],
+    requiresNetwork: networkPreviews.has(component.id),
+  };
+}

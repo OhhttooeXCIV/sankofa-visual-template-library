@@ -59,3 +59,9 @@ npm run build
 3. Switch to the **Export Code (Zero Friction)** tab.
 4. Click **Copy Component Code** to copy the component into your project's `src/components/` folder.
 5. Click **main.jsx Integration Boilerplate** to view the exact imports and wrapper setup.
+
+## Mobile and offline
+
+Open **Documentation → Mobile navigation and offline use** in the showcase for the implementation notes, React and Angular integration guidance, and a component-by-component reference.
+
+Run `npm run build` and `npm run preview` to exercise offline saving. The worker is registered only in production builds. For verification, run `npm test`, then install Chromium with `npx playwright-core install chromium` and run `npm run test:browser` against the built output. Set `CHROMIUM_PATH` to use an existing Chromium binary.

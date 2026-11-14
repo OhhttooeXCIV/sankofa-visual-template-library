@@ -8,6 +8,70 @@ import { IMPORTED_COMPONENT_DESCRIPTORS } from './importedRegistry.js';
 
 const RAW_COMPONENT_REGISTRY = [
   ...IMPORTED_COMPONENT_DESCRIPTORS,
+  ...[
+    {
+      id: 'application-shell', name: 'Application Shell', category: 'Navigation & Shell',
+      sourcePath: 'src/library/navigation/ApplicationShell.jsx',
+      tagline: 'Compose a branded shell with real destinations and a focusable content landmark.',
+      props: [{ name: 'links', type: 'Array<{ href, label }>', description: 'Primary destinations.' }],
+      exportCode: "import { ApplicationShell } from './library';",
+      mainJsxCode: '<ApplicationShell brand="My project" links={links} activeHref={location.pathname}><Page /></ApplicationShell>',
+    },
+    {
+      id: 'drawer', name: 'Drawer', category: 'Overlays & Modals',
+      sourcePath: 'src/library/foundations/Drawer.jsx',
+      tagline: 'A full-width mobile overlay with a scrollable body and reachable footer.',
+      props: [
+        { name: 'isOpen', type: 'boolean', description: 'Whether to show the drawer.' },
+        { name: 'onClose', type: 'function', description: 'Handles dismissal.' },
+        { name: 'footer', type: 'ReactNode', description: 'Optional actions below the scrollable body.' },
+      ],
+      exportCode: "import { Drawer } from './library';",
+      mainJsxCode: '<Drawer isOpen={open} onClose={() => setOpen(false)} title="Filters"><Filters /></Drawer>',
+    },
+    {
+      id: 'responsive-navigation', name: 'Responsive Navigation', category: 'Navigation & Shell',
+      sourcePath: 'src/library/navigation/ResponsiveNavigation.jsx',
+      tagline: 'One set of destinations for a mobile bottom bar and desktop rail.',
+      props: [
+        { name: 'links', type: 'Array<{ href, label, id? }>', default: '[]', description: 'Ordered destinations with real URLs.' },
+        { name: 'activeHref', type: 'string', description: 'URL to mark as the current page.' },
+      ],
+      exportCode: "import { ResponsiveNavigation } from './library';",
+      mainJsxCode: '<ResponsiveNavigation links={[{ href: "/", label: "Overview" }, { href: "/components", label: "Components" }]} activeHref="/" />',
+    },
+    {
+      id: 'offline-save-button', name: 'Offline Save Button', category: 'Operations & Feedback',
+      sourcePath: 'src/library/offline/OfflineSaveButton.jsx',
+      tagline: 'Save or remove an explicit offline copy with pending feedback.',
+      props: [
+        { name: 'saved', type: 'boolean', description: 'Whether storage has confirmed the copy.' },
+        { name: 'busy', type: 'boolean', description: 'Disables duplicate clicks during a write.' },
+        { name: 'onToggle', type: 'function', description: 'Host callback to save or remove the copy.' },
+      ],
+      exportCode: "import { OfflineSaveButton } from './library';",
+      mainJsxCode: '<OfflineSaveButton saved={saved} busy={busy} onToggle={toggleOfflineCopy} />',
+    },
+    {
+      id: 'offline-sync-status', name: 'Offline Sync Status', category: 'Operations & Feedback',
+      sourcePath: 'src/library/operations/OfflineSyncStatus.jsx',
+      tagline: 'Distinguish local saves, queued work, and acknowledged operations.',
+      props: [
+        { name: 'status', type: 'saved | queued | sending | sent | needs-attention', description: 'Current operation state.' },
+        { name: 'pendingCount', type: 'number', description: 'Optional number of pending operations.' },
+        { name: 'onRetry', type: 'function', description: 'Optional host callback for retries.' },
+      ],
+      exportCode: "import { OfflineSyncStatus, createOfflineOutbox } from './library';",
+      mainJsxCode: '<OfflineSyncStatus status="queued" pendingCount={2} onRetry={() => outbox.drain()} />',
+    },
+  ].map((entry) => ({
+    ...entry,
+    explanation: entry.tagline,
+    usage: entry.mainJsxCode,
+    useCases: ['Mobile dashboards', 'Installed web apps'],
+    testPath: 'src/library/__tests__/mobile-offline.test.jsx',
+  })),
+
   {
     id: 'legal-policy-kit',
     name: 'South African Legal Policy Kit',

@@ -38,3 +38,7 @@ export {
   ComplianceDisclaimer,
   PolicyCustomizer,
 } from '../legal';
+export { ResponsiveNavigation } from '../navigation/ResponsiveNavigation';
+export { OfflineSaveButton } from '../offline/OfflineSaveButton';
+export { OfflineSyncStatus } from '../operations/OfflineSyncStatus';
+export { Drawer } from "../foundations/Drawer";

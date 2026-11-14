@@ -10,3 +10,9 @@ export { default as ExportMenu } from '../../src/library/operations/ExportMenu.j
 export { default as InlineFeedback } from '../../src/library/operations/InlineFeedback.jsx';
 export { default as StatusBadge } from '../../src/library/operations/StatusBadge.jsx';
 export { default as WorkflowStepper } from '../../src/library/operations/WorkflowStepper.jsx';
+export { ApplicationShell } from '../../src/library/navigation/ApplicationShell.jsx';
+export { ResponsiveNavigation } from '../../src/library/navigation/ResponsiveNavigation.jsx';
+export { OfflineSaveButton } from '../../src/library/offline/OfflineSaveButton.jsx';
+export { OfflineSyncStatus } from '../../src/library/operations/OfflineSyncStatus.jsx';
+export { createOfflineOutbox } from '../../src/library/offline/outbox.js';
+export { Drawer } from "../../src/library/foundations/Drawer.jsx";

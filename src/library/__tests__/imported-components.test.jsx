@@ -19,7 +19,7 @@ describe('imported reusable components', () => {
   it('supports native expandable content', () => {
     render(<ExpandableSection title="Details">Hidden content</ExpandableSection>);
     expect(screen.getByText('Hidden content')).toBeInTheDocument();
-    expect(screen.getByRole('group')).not.toBeInTheDocument();
+    expect(screen.getByRole('group')).not.toHaveAttribute('open');
   });
 
   it('keeps one accordion panel open', () => {

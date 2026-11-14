@@ -1,61 +1,51 @@
-import React, { useState, useMemo } from 'react';
+import React, { useDeferredValue, useMemo } from 'react';
 import Header from './showcase/components/Header';
 import Sidebar from './showcase/components/Sidebar';
 import ComponentViewer from './showcase/components/ComponentViewer';
+import MobileGuide from './showcase/components/MobileGuide';
+import ReadingProgress from './showcase/components/ReadingProgress';
+import { ResponsiveNavigation } from './library/navigation/ResponsiveNavigation';
+import { OfflineSaveButton } from './library/offline/OfflineSaveButton';
 import { COMPONENT_REGISTRY } from './library/docs/registry';
+import { destinations, followRoute, routeHref, useShowcaseNavigation } from './showcase/navigation';
+import { useOfflineCatalogue } from './showcase/offline/useOfflineCatalogue';
+
+const categories = ['All', ...new Set(COMPONENT_REGISTRY.map((component) => component.category))];
+const actionClass = 'min-h-11 rounded-lg px-3 py-2 text-sm font-semibold text-amber-300 hover:bg-slate-800';
 
 export function App() {
-  const [selectedId, setSelectedId] = useState(COMPONENT_REGISTRY[0].id);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState('All');
-  const [activeView, setActiveView] = useState('overview');
-
-  // Categories list
-  const categories = useMemo(() => {
-    const set = new Set(COMPONENT_REGISTRY.map((c) => c.category));
-    return ['All', ...Array.from(set)];
-  }, []);
-
-  // Filtered components list
+  const { route, mainRef, navigate, openComponent, backToCatalogue, selectTab } = useShowcaseNavigation();
+  const { view: activeView, component, tab, query } = route;
+  const category = categories.includes(route.category) ? route.category : 'All';
+  const offline = useOfflineCatalogue();
+  const savedView = activeView === 'saved';
+  const catalogueView = activeView === 'library' || savedView;
+  const deferredQuery = useDeferredValue(query);
+  const visibleEntries = savedView || !offline.online ? offline.saved : COMPONENT_REGISTRY;
   const filteredComponents = useMemo(() => {
-    return COMPONENT_REGISTRY.filter((item) => {
-      const matchesCategory =
-        activeCategory === 'All' || item.category === activeCategory;
-      const query = searchQuery.toLowerCase().trim();
-      const matchesQuery =
-        !query ||
-        item.name.toLowerCase().includes(query) ||
-        item.tagline.toLowerCase().includes(query) ||
-        item.category.toLowerCase().includes(query) ||
-        item.id.toLowerCase().includes(query);
-      return matchesCategory && matchesQuery;
-    });
-  }, [activeCategory, searchQuery]);
-
-  // Active selected component
-  const activeComponent = useMemo(() => {
-    const found = COMPONENT_REGISTRY.find((c) => c.id === selectedId);
-    return found || filteredComponents[0] || COMPONENT_REGISTRY[0];
-  }, [selectedId, filteredComponents]);
+    const needle = deferredQuery.toLowerCase().trim();
+    return visibleEntries.filter((item) =>
+      (category === 'All' || item.category === category) &&
+      [item.name, item.tagline, item.category, item.id].some((text) => text.toLowerCase().includes(needle))
+    );
+  }, [category, deferredQuery, visibleEntries]);
+  const activeComponent = visibleEntries.find((entry) => entry.id === component);
+  const viewRoute = (view) => ({ view, tab: 'preview' });
+  const setActiveView = (view) => navigate(viewRoute(view));
+  const links = destinations.map((item) => ({ ...item, href: routeHref(viewRoute(item.id)) }));
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-amber-500/30 selection:text-amber-200">
-      {/* Top Header */}
-      <Header
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        activeCategory={activeCategory}
-        onSelectCategory={(category) => {
-          setActiveCategory(category);
-          setActiveView('library');
-        }}
-        categories={categories}
-        componentCount={COMPONENT_REGISTRY.length}
-        activeView={activeView}
-        onSelectView={setActiveView}
-      />
-
-      <main>
+    <div className="sankofa-motion-scope sankofa-nav-clearance min-h-screen bg-slate-950 font-sans text-slate-100">
+      <a href="#showcase-main" className="sr-only focus:not-sr-only focus:fixed focus:z-50 focus:bg-amber-400 focus:p-3 focus:text-slate-950">Skip to content</a>
+      <Header componentCount={COMPONENT_REGISTRY.length} />
+      <div className="mx-auto grid max-w-screen-2xl md:grid-cols-[11rem_minmax(0,1fr)] md:gap-4 md:px-4">
+        <div className="md:pt-4">
+          <ResponsiveNavigation links={links} activeHref={routeHref(viewRoute(activeView))}
+            onNavigate={(event, id) => followRoute(event, () => setActiveView(id))} />
+        </div>
+        <main id="showcase-main" ref={mainRef} tabIndex={-1} className="min-w-0">
+          {!offline.online && <p role="status" className="border-b border-amber-400/20 px-4 py-2 text-sm text-amber-200">You’re offline. Saved components are available on this device.</p>}
+          <div role="status" aria-atomic="true" className={offline.status ? 'px-4 py-2 text-sm text-amber-200' : 'sr-only'}>{offline.status}</div>
         {activeView === 'overview' && <section className="relative isolate overflow-hidden border-b border-amber-500/10 bg-[radial-gradient(circle_at_70%_20%,rgba(245,158,11,0.16),transparent_35%),linear-gradient(135deg,#090d16_0%,#120e0a_55%,#090d16_100%)]">
           <div className="mx-auto grid w-full max-w-7xl items-center gap-10 px-5 py-14 sm:px-8 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:px-10 lg:py-24">
             <div className="relative z-10 max-w-2xl">
@@ -101,12 +91,14 @@ export function App() {
           <button type="button" onClick={() => setActiveView('library')} className="rounded-xl border border-amber-400/40 bg-amber-400/10 px-4 py-2.5 text-sm font-semibold text-amber-300 transition hover:bg-amber-400/20">Start browsing components →</button>
         </section>}
 
+        {activeView === 'docs' && <ReadingProgress />}
         {activeView === 'docs' && <section aria-labelledby="docs-heading" className="mx-auto w-full max-w-7xl px-5 py-14 sm:px-8 lg:px-10 lg:py-20">
           <div className="max-w-3xl">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-amber-400">Developer onboarding</p>
             <h2 id="docs-heading" className="mt-2 text-3xl font-semibold tracking-tight text-white sm:text-5xl">Understand the platform before you compose it.</h2>
             <p className="mt-5 text-base leading-8 text-slate-300">Sankofa separates reusable interface primitives from product-specific business rules. Public guides explain installation, architecture, reuse boundaries, and CI. Approved members receive private operational notes through the configured GitHub and Supabase role layer.</p>
           </div>
+          <MobileGuide />
           <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {[
               ['Introduction', 'The why, the package model, and the fastest route from idea to a clean starter.', '/docs/introduction.html'],
@@ -119,19 +111,50 @@ export function App() {
           </div>
         </section>}
 
-        {/* Main Showcase Workspace */}
-        {activeView === 'library' && <div id="component-library" className="flex-1 max-w-7xl w-full mx-auto flex flex-col lg:flex-row overflow-hidden">
-        {/* Left Category Sidebar */}
-        <Sidebar
-          components={filteredComponents}
-          selectedId={activeComponent?.id}
-          onSelectComponent={setSelectedId}
-        />
 
-        {/* Right Detail Viewer */}
-        <ComponentViewer component={activeComponent} />
-        </div>}
-      </main>
+          {catalogueView && !component && <section aria-labelledby="catalogue-heading">
+            <div className="grid gap-4 px-4 pt-6">
+              <h1 id="catalogue-heading" className="text-2xl font-semibold">{savedView ? 'Saved offline' : 'Components'}</h1>
+              <div className="grid gap-3 sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+                <label className="grid gap-1 text-sm text-slate-300">Search components
+                  <input type="search" value={query} placeholder="Name or keyword"
+                    onChange={(event) => navigate({ ...route, query: event.target.value }, { replace: true, focus: false })}
+                    className="min-h-11 min-w-0 rounded-lg border border-slate-700 bg-slate-900 px-3 text-base text-white" />
+                </label>
+                <label className="grid gap-1 text-sm text-slate-300">Category
+                  <select value={category}
+                    onChange={(event) => navigate({ ...route, category: event.target.value }, { focus: false })}
+                    className="min-h-11 min-w-0 rounded-lg border border-slate-700 bg-slate-900 px-3 text-base text-white">
+                    {categories.map((name) => <option key={name}>{name}</option>)}
+                  </select>
+                </label>
+              </div>
+              <p className="text-sm text-slate-400" role="status">{filteredComponents.length} {filteredComponents.length === 1 ? 'component' : 'components'}</p>
+            </div>
+            {filteredComponents.length ? <Sidebar components={filteredComponents}
+              componentHref={(id) => routeHref({ ...route, component: id, tab: 'preview' })}
+              onSelectComponent={openComponent} /> :
+              <p className="p-4 text-slate-300">{(savedView || !offline.online) && !offline.saved.length
+                ? 'Saved copies will appear here. Open a component while connected and choose Save for offline.'
+                : 'No components match your search and category.'}</p>}
+          </section>}
+          {catalogueView && component && <section aria-label="Component details">
+            <div className="px-4 pt-3">
+              <a className={`inline-flex items-center ${actionClass}`}
+                href={routeHref({ ...route, component: '' })}
+                onClick={(event) => followRoute(event, backToCatalogue)}>← {savedView ? 'Saved offline' : 'All results'}</a>
+            </div>
+            {activeComponent ? <ComponentViewer key={component} component={activeComponent} tab={tab}
+              onSelectTab={selectTab} offline={!offline.online}
+              actions={<OfflineSaveButton saved={offline.saved.some((entry) => entry.id === component)}
+                busy={offline.busy} disabled={!offline.online && !offline.saved.some((entry) => entry.id === component)}
+                onToggle={() => offline.toggle(activeComponent)} />} /> :
+              <p className="p-4" role="status">{savedView || !offline.online
+                ? 'No offline copy of this component is available on this device.'
+                : 'This component could not be found.'}</p>}
+          </section>}
+        </main>
+      </div>
     </div>
   );
 }

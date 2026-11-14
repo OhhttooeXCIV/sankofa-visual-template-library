@@ -4,3 +4,4 @@ export { StatusBadge } from './StatusBadge';
 export { WorkflowStepper } from './WorkflowStepper';
 export { ExportMenu } from './ExportMenu';
 export { InlineFeedback } from './InlineFeedback';
+export { OfflineSyncStatus } from './OfflineSyncStatus';

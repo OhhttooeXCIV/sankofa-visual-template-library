@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { X } from 'lucide-react';
-import useScrollLock from './useScrollLock';
+import { createPortal } from 'react-dom';
+import { useDialogFocus } from './useDialogFocus';
 
 /**
  * VideoModal - Responsive video player dialog for embed URLs or HTML5 video.
@@ -18,34 +19,28 @@ export const VideoModal = ({
   title = 'Video Player',
   aspectRatio = '16:9',
 }) => {
-  useScrollLock(isOpen);
-  const videoRef = useRef(null);
+  const dialogRef = useDialogFocus(isOpen && !!videoUrl, onClose);
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && isOpen) onClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
 
   if (!isOpen || !videoUrl) return null;
 
   const isEmbed = videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be') || videoUrl.includes('vimeo.com');
 
   const aspectClasses = {
-    '16:9': 'aspect-video',
-    '9:16': 'aspect-[9/16] max-h-[80vh] w-auto',
-    '4:3': 'aspect-[4/3]',
-    '1:1': 'aspect-square',
+    '16:9': 'aspect-video max-h-[70dvh]',
+    '9:16': 'aspect-[9/16] max-h-[65dvh] w-auto',
+    '4:3': 'aspect-[4/3] max-h-[70dvh]',
+    '1:1': 'aspect-square max-h-[70dvh]',
   };
 
-  return (
+  return createPortal(
     <div
+      ref={dialogRef}
+      tabIndex={-1}
       role="dialog"
       aria-modal="true"
       aria-label={title}
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6"
+      className="sankofa-motion-scope fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6"
     >
       {/* Backdrop */}
       <div
@@ -59,7 +54,7 @@ export const VideoModal = ({
         <button
           onClick={onClose}
           aria-label="Close video"
-          className="absolute -top-12 right-0 p-2 text-slate-300 hover:text-white transition-colors bg-slate-900/80 rounded-full border border-slate-700/60"
+          className="mb-2 min-h-11 min-w-11 self-end p-2 text-slate-300 hover:text-white transition-colors bg-slate-900/80 rounded-full border border-slate-700/60"
         >
           <X size={20} />
         </button>
@@ -76,7 +71,6 @@ export const VideoModal = ({
             />
           ) : (
             <video
-              ref={videoRef}
               src={videoUrl}
               controls
               autoPlay
@@ -86,7 +80,7 @@ export const VideoModal = ({
           )}
         </div>
       </div>
-    </div>
+    </div>, document.body
   );
 };
 
