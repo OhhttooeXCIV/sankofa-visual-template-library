@@ -1,0 +1,8 @@
+{
+  "name": "__PROJECT_SLUG__",
+  "private": true,
+  "type": "module",
+  "scripts": { "build": "vite build", "dev": "vite", "validate": "node scripts/validate.mjs" },
+  "dependencies": { "@sankofa/config": "0.1.0", "@sankofa/contracts": "0.1.0", "@sankofa/ui": "0.1.0", "react": "19.2.0", "react-dom": "19.2.0" },
+  "devDependencies": { "@vitejs/plugin-react": "5.1.1", "vite": "7.2.4" }
+}

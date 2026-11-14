@@ -1,0 +1,11 @@
+name: Sankofa security
+on: { workflow_call: {} }
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    permissions: { contents: read }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: gitleaks/gitleaks-action@v2
+        env: { GITHUB_TOKEN: ${{ github.token }} }
+      - run: npm audit --audit-level=high

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layers, Search, Sparkles, BookOpen } from 'lucide-react';
+import { Layers, Search, Sparkles } from 'lucide-react';
 
 export const Header = ({
   searchQuery,
@@ -17,6 +17,7 @@ export const Header = ({
         <nav aria-label="Primary navigation" className="hidden lg:flex items-center gap-1 rounded-xl border border-slate-800 bg-slate-900/60 p-1">
           {[
             { id: 'overview', label: 'Introduction' },
+            { id: 'docs', label: 'Documentation' },
             { id: 'library', label: 'Browse library' },
           ].map((item) => (
             <button
@@ -88,6 +89,13 @@ export const Header = ({
             className="lg:hidden px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-300 border border-slate-800"
           >
             Browse library
+          </button>
+          <button
+            type="button"
+            onClick={() => onSelectView('docs')}
+            className="lg:hidden px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-300 border border-slate-800"
+          >
+            Documentation
           </button>
           {categories.map((cat) => (
             <button

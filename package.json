@@ -1,6 +1,9 @@
 {
   "name": "sankofa-visual-template-library",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "version": "1.0.0",
   "description": "Sankofa Visual Component & Template Design System Library",
   "type": "module",
@@ -10,7 +13,11 @@
     "preview": "vite preview",
     "test:legal": "node scripts/test-legal-policy-pack.mjs",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "docs:build": "node scripts/build-docs.mjs",
+    "sankofa": "node scripts/sankofa-cli.mjs",
+    "platform:validate": "node scripts/sankofa-cli.mjs validate --json",
+    "platform:doctor": "node scripts/sankofa-cli.mjs doctor --json"
   },
   "dependencies": {
     "clsx": "^2.1.1",

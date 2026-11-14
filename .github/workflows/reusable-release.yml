@@ -1,0 +1,12 @@
+name: Sankofa release
+on: { workflow_call: {} }
+jobs:
+  release-check:
+    runs-on: ubuntu-latest
+    permissions: { contents: read }
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require changelog
+        run: test -f CHANGELOG.md
+      - name: Validate package metadata
+        run: node -e "for (const p of ['packages/ui/package.json','packages/contracts/package.json','packages/config/package.json','packages/supabase/package.json']) JSON.parse(require('fs').readFileSync(p))"

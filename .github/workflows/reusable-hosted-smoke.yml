@@ -1,0 +1,19 @@
+name: Sankofa hosted smoke
+on:
+  workflow_call:
+    inputs:
+      base-url: { type: string, required: true }
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    permissions: { contents: read }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: npm }
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - name: Verify preview is reachable
+        run: node -e "fetch(process.env.BASE_URL).then(r=>{if(!r.ok) process.exit(1)})"
+        env: { BASE_URL: ${{ inputs.base-url }} }
