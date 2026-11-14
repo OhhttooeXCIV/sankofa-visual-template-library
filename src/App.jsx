@@ -97,6 +97,24 @@ export function App() {
           <button type="button" onClick={() => setActiveView('library')} className="rounded-xl border border-amber-400/40 bg-amber-400/10 px-4 py-2.5 text-sm font-semibold text-amber-300 transition hover:bg-amber-400/20">Start browsing components →</button>
         </section>}
 
+        {activeView === 'docs' && <section aria-labelledby="docs-heading" className="mx-auto w-full max-w-7xl px-5 py-14 sm:px-8 lg:px-10 lg:py-20">
+          <div className="max-w-3xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-amber-400">Developer onboarding</p>
+            <h2 id="docs-heading" className="mt-2 text-3xl font-semibold tracking-tight text-white sm:text-5xl">Understand the platform before you compose it.</h2>
+            <p className="mt-5 text-base leading-8 text-slate-300">Sankofa separates reusable interface primitives from product-specific business rules. Public guides explain installation, architecture, reuse boundaries, and CI. Approved members receive private operational notes through the configured GitHub and Supabase role layer.</p>
+          </div>
+          <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              ['Introduction', 'The why, the package model, and the fastest route from idea to a clean starter.', '/docs/introduction.html'],
+              ['Architecture', 'UI, contracts, Supabase adapters, region defaults, and service-candidate boundaries.', null],
+              ['Security boundaries', 'What is reusable, what stays isolated, and how privileged operations are handled.', '/docs/security-boundaries.html'],
+              ['CLI quick start', 'Generate a pinned React/Vite project with a dry-run plan before any external mutation.', null],
+              ['CI reference', 'Quality, security, Supabase validation, hosted smoke, and protected release workflows.', null],
+              ['Member handbook', 'Role-aware runbooks and project operations for approved GitHub-authenticated members.', null],
+            ].map(([title, text, href]) => <article key={title} className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6"><h3 className="text-lg font-semibold text-white">{title}</h3><p className="mt-2 text-sm leading-7 text-slate-400">{text}</p>{href ? <a className="mt-4 inline-block text-sm font-semibold text-amber-300 hover:text-amber-200" href={href}>Read guide →</a> : <span className="mt-4 inline-block text-xs uppercase tracking-widest text-slate-500">In platform docs</span>}</article>)}
+          </div>
+        </section>}
+
         {/* Main Showcase Workspace */}
         {activeView === 'library' && <div id="component-library" className="flex-1 max-w-7xl w-full mx-auto flex flex-col lg:flex-row overflow-hidden">
         {/* Left Category Sidebar */}

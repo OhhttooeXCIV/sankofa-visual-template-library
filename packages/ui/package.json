@@ -1,0 +1,12 @@
+{
+  "name": "@sankofa/ui",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "exports": {
+    ".": "./index.js"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  }
+}
