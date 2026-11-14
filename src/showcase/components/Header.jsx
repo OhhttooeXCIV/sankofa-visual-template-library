@@ -7,6 +7,7 @@ export const Header = ({
   activeCategory,
   onSelectCategory,
   categories = [],
+  componentCount = 0,
   activeView = 'overview',
   onSelectView = () => {},
 }) => {
@@ -47,7 +48,7 @@ export const Header = ({
               </span>
             </div>
             <p className="text-[11px] text-slate-400 hidden sm:block">
-              17 Production-Grade Reusable Components & Boilerplates
+              {componentCount} Production-Grade Reusable Components & Boilerplates
             </p>
           </div>
         </div>
@@ -57,7 +58,7 @@ export const Header = ({
           <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
-            placeholder="Search 17 components, props, hooks, or categories..."
+            placeholder={`Search ${componentCount} components, props, hooks, or categories...`}
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             className="w-full pl-10 pr-4 py-2 rounded-xl text-xs bg-slate-900 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500/60 focus:ring-1 focus:ring-amber-500/40 transition-all"

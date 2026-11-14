@@ -50,6 +50,7 @@ export function App() {
           setActiveView('library');
         }}
         categories={categories}
+        componentCount={COMPONENT_REGISTRY.length}
         activeView={activeView}
         onSelectView={setActiveView}
       />
