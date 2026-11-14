@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03",
+  "generatedAt": "2026-11-14",
   "policy": "Source applications remain unchanged. Imported components are normalized to React 19 and Tailwind conventions.",
   "entries": [
     { "id": "button", "sourceProject": "phekong-commerce-platform", "sourcePath": "src/components/ui/Button.tsx", "adaptation": "Removed project CSS and converted variants to library Tailwind tokens." },
@@ -20,5 +20,11 @@
   ],
   "duplicates": [
     { "behavior": "Safety and commercial component variants", "projects": ["Umkhuseli_The_Protector", "Umk_Commercial", "Umk_Commercial_Lib-"], "decision": "Excluded from the 30-entry UI set because the variants contain domain-specific safety, service, and app-state logic." }
+  ],
+  "platformSources": [
+    { "repository": "Sankofa-Digital-Studio/Umk_Commercial_Lib-", "classification": "ui-and-service-inventory", "decision": "Generalized UI and safe contracts only; emergency, evidence, duress, covert, and survivor-safety flows excluded." },
+    { "repository": "Sankofa-Digital-Studio/Umk_Commercial", "classification": "ui-and-workflow-inventory", "decision": "Reuse candidates reviewed for portability; product-specific commerce and safety flows remain outside generic packages." },
+    { "repository": "Sankofa-Digital-Studio/senatla-ops-internal-automation-solution", "classification": "workflow-and-backend-baseline", "decision": "Quality, hosted smoke, runtime configuration, export, OCR, and provisioning patterns adapted into platform references." },
+    { "repository": "Sankofa-Digital-Studio/golden-grace-legacy", "classification": "react-quality-baseline", "decision": "React/Vite quality gates, asset checks, validation, and release conventions used as compatibility references." }
   ]
 }
