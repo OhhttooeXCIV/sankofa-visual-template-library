@@ -3,6 +3,7 @@ import Header from './showcase/components/Header';
 import Sidebar from './showcase/components/Sidebar';
 import ComponentViewer from './showcase/components/ComponentViewer';
 import { COMPONENT_REGISTRY } from './library/docs/registry';
+import MemberPortal from './member/MemberPortal';
 
 export function App() {
   const [selectedId, setSelectedId] = useState(COMPONENT_REGISTRY[0].id);
@@ -118,6 +119,8 @@ export function App() {
             ].map(([title, text, href]) => <article key={title} className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6"><h3 className="text-lg font-semibold text-white">{title}</h3><p className="mt-2 text-sm leading-7 text-slate-400">{text}</p>{href ? <a className="mt-4 inline-block text-sm font-semibold text-amber-300 hover:text-amber-200" href={href}>Read guide →</a> : <span className="mt-4 inline-block text-xs uppercase tracking-widest text-slate-500">In platform docs</span>}</article>)}
           </div>
         </section>}
+
+        {activeView === 'member' && <MemberPortal />}
 
         {/* Main Showcase Workspace */}
         {activeView === 'library' && <div id="component-library" className="flex-1 max-w-7xl w-full mx-auto flex flex-col lg:flex-row overflow-hidden">

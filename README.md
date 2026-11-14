@@ -4,7 +4,7 @@ An enterprise-grade, standalone React 19 + Tailwind CSS component design system 
 
 ## 🚀 Overview
 
-The **Sankofa Visual Template Library** provides 17 production-grade, white-label, highly customizable UI components, layout primitives, and hooks. Each component is paired with:
+The **Sankofa Visual Template Library** provides a growing registry of production-grade, white-label, highly customizable UI components, layout primitives, and hooks. The showcase count is derived from the component registry rather than hard-coded. Each component is paired with:
 1. **Interactive Live Previews** (live prop tweaking, state triggers, modal openers, toast dispatches).
 2. **Deep Architectural Explanations** (WAI-ARIA accessibility, layout shift mitigation, mobile bandwidth performance).
 3. **Real-World Use Cases** (E-commerce storefronts, SaaS dashboards, mobile PWAs, and editorial branding).

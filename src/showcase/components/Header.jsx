@@ -19,6 +19,7 @@ export const Header = ({
           {[
             { id: 'overview', label: 'Introduction' },
             { id: 'docs', label: 'Documentation' },
+            { id: 'member', label: 'Member area' },
             { id: 'library', label: 'Browse library' },
           ].map((item) => (
             <button
@@ -98,6 +99,7 @@ export const Header = ({
           >
             Documentation
           </button>
+          <button type="button" onClick={() => onSelectView('member')} className="lg:hidden px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-300 border border-slate-800">Member area</button>
           {categories.map((cat) => (
             <button
               key={cat}
