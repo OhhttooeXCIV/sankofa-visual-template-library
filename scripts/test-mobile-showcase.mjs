@@ -47,7 +47,7 @@ try {
 
   await page.getByRole('link', { name: 'Components', exact: true }).click();
   await page.getByRole('searchbox').fill('scroll');
-  let target = page.getByRole('link', { name: 'useScrollLock', exact: true });
+  let target = page.getByRole('link', { name: 'useScrollLock Custom Hook', exact: true });
   await target.waitFor();
   await page.getByRole('searchbox').fill('');
   await target.scrollIntoViewIfNeeded();
@@ -57,7 +57,7 @@ try {
   await page.getByRole('tab', { name: /Export Code/ }).click();
   assert.match(page.url(), /component=use-scroll-lock.*tab=export/);
   await page.goBack();
-  target = page.getByRole('link', { name: 'useScrollLock', exact: true });
+  target = page.getByRole('link', { name: 'useScrollLock Custom Hook', exact: true });
   await target.waitFor();
   assert.equal(await target.evaluate((node) => node === document.activeElement), true);
   assert.ok(Math.abs((await page.evaluate(() => scrollY)) - position) < 40);
@@ -84,7 +84,7 @@ try {
   page = await context.newPage();
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto(origin + '/?view=saved');
-  await page.getByRole('link', { name: 'Video Modal', exact: true }).click();
+  await page.getByRole('link', { name: 'Video Player Modal', exact: true }).click();
   await page.getByText(/this preview uses online media/i).waitFor();
   await page.getByRole('tab', { name: /Export Code/ }).click();
   await page.getByRole('button', { name: 'Copy Code' }).click();
@@ -122,11 +122,11 @@ try {
   assert.ok((await page.evaluate(() => caches.keys())).some((key) => key.endsWith('-test-2')));
   await context.setOffline(true);
   await page.reload();
-  await page.getByRole('link', { name: 'Video Modal', exact: true }).click();
+  await page.getByRole('link', { name: 'Video Player Modal', exact: true }).click();
   await page.getByRole('button', { name: 'Remove offline copy' }).click();
   await page.getByText('Offline copy removed.', { exact: true }).waitFor();
   await page.goto(origin + '/?view=saved');
-  assert.equal(await page.getByRole('link', { name: 'Video Modal', exact: true }).count(), 0);
+  assert.equal(await page.getByRole('link', { name: 'Video Player Modal', exact: true }).count(), 0);
   await page.getByRole('link', { name: 'Button', exact: true }).click();
   await page.getByRole('button', { name: 'Remove offline copy' }).click();
   await page.getByText('Offline copy removed.', { exact: true }).waitFor();
