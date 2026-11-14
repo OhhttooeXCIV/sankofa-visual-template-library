@@ -45,7 +45,10 @@ export function App() {
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         activeCategory={activeCategory}
-        onSelectCategory={setActiveCategory}
+        onSelectCategory={(category) => {
+          setActiveCategory(category);
+          setActiveView('library');
+        }}
         categories={categories}
         activeView={activeView}
         onSelectView={setActiveView}
