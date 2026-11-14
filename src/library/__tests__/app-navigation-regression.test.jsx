@@ -65,8 +65,8 @@ describe('App onboarding and navigation regressions', () => {
     fireEvent.click(categoryButton);
     fireEvent.click(screen.getAllByRole('button', { name: 'Browse library' })[0]);
 
-    expect(screen.getByText(category)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /browse library/i }).first()).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: category, exact: true })).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: /browse library/i })[0]).toBeInTheDocument();
   });
 });
 
