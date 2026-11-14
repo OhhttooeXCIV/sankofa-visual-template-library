@@ -88,4 +88,10 @@ describe('ComponentViewer tab switching regressions', () => {
     expect(screen.getByText(/this component explains the problem/i)).toBeInTheDocument();
     expect(screen.queryByTestId('live-preview')).not.toBeInTheDocument();
   });
+
+  it('keeps the explanation panel renderable when imported metadata omits use cases', () => {
+    render(<ComponentViewer component={{ ...component, useCases: undefined }} />);
+    fireEvent.click(screen.getByRole('tab', { name: /overview & use cases/i }));
+    expect(screen.getByText(/portable building block/i)).toBeInTheDocument();
+  });
 });

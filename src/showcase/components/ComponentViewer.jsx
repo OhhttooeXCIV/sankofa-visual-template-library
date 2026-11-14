@@ -22,6 +22,10 @@ export const ComponentViewer = ({ component }) => {
     );
   }
 
+  const useCases = Array.isArray(component.useCases) && component.useCases.length > 0
+    ? component.useCases
+    : ['Use this primitive as a portable building block and adapt its data, routing, and visual tokens to your product.'];
+
   const handleCopyCode = (code) => {
     navigator.clipboard.writeText(code);
     setCopiedNotification(true);
@@ -164,7 +168,7 @@ export const ComponentViewer = ({ component }) => {
               <span>Real-World Use Cases</span>
             </h3>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {component.useCases.map((uc, idx) => (
+              {useCases.map((uc, idx) => (
                 <li
                   key={idx}
                   className="flex items-start gap-3 p-4 rounded-2xl bg-slate-950/60 border border-slate-800/60"
