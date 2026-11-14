@@ -8,6 +8,96 @@ const shared = {
   knownLimitations: 'App-specific routing, APIs, authentication, and business data are intentionally excluded.',
 };
 
+const pascalCase = (value) => value.split(/[^a-zA-Z0-9]+/).filter(Boolean).map((part) => part[0].toUpperCase() + part.slice(1)).join('');
+
+function exampleUsage(entry) {
+  const component = entry.exportName || pascalCase(entry.name);
+  const examples = {
+    StatusBadge: '<StatusBadge status="success" tone="success" />',
+    DataTableShell: `<DataTableShell
+  columns={[{ key: 'name', label: 'Name' }, { key: 'status', label: 'Status' }]}
+  rows={[{ id: 1, name: 'Example record', status: 'Ready' }]}
+  selectable
+/>`,
+    WorkflowStepper: `<WorkflowStepper
+  steps={[{ label: 'Draft' }, { label: 'Review' }, { label: 'Done' }]}
+  current={1}
+  onStepChange={(index) => console.log('step', index)}
+/>`,
+    ExportMenu: `<ExportMenu
+  formats={['CSV', 'PDF']}
+  onExport={(format) => console.log('export', format)}
+/>`,
+    InlineFeedback: `<InlineFeedback
+  tone="success"
+  title="Saved successfully"
+  message="Your changes are ready for review."
+/>`,
+    Toast: `<Toast variant="success" message="Export complete" duration={4000} />`,
+    Button: `<Button variant="primary" size="md" onClick={() => console.log('clicked')}>
+  Save changes
+</Button>`,
+    Card: `<Card title="Project health" tone="surface">
+  <p>All checks are passing.</p>
+</Card>`,
+    FeatureCard: `<FeatureCard
+  title="Offline-ready"
+  description="Keep the critical workflow usable when connectivity is limited."
+  badge="Recommended"
+/>`,
+    SiteFooter: `<SiteFooter
+  groups={[{ label: 'Resources', links: [{ label: 'Docs', href: '/docs' }] }]}
+  legalLinks={[{ label: 'Privacy', href: '/privacy' }]}
+/>`,
+    CommandPalette: `<CommandPalette
+  items={[{ label: 'Open dashboard', href: '/dashboard' }]}
+  shortcut="k"
+/>`,
+    ActionFeedback: `<ActionFeedback state={{ status: 'success', message: 'Saved successfully' }} />`,
+    CommerceRouteHero: `<CommerceRouteHero
+  title="Build with reusable patterns"
+  primaryAction={{ label: 'Get started', href: '/start' }}
+  proofPoints={['Accessible', 'Responsive']}
+/>`,
+    ProductDetail: `<ProductDetail
+  product={{ id: 'starter', name: 'Starter kit', price: 299, image: '/product.webp', inStock: true }}
+  onAddToCart={(product) => console.log('add to cart', product.id)}
+/>`,
+    ApprovedImage: `<ApprovedImage
+  src="/assets/example.webp"
+  alt="Example product"
+  fallbackLabel="Product image unavailable"
+/>`,
+    ExpandableSection: `<ExpandableSection title="Implementation notes" defaultOpen>
+  <p>Keep product-specific data outside the component.</p>
+</ExpandableSection>`,
+    SingleOpenAccordion: `<SingleOpenAccordion
+  items={[{ id: 'one', title: 'What does it solve?', content: 'It keeps progressive content accessible.' }]}
+  openItemId="one"
+  onOpenItemChange={(id) => console.log('open item', id)}
+/>`,
+    LearnerProgressRibbon: `<LearnerProgressRibbon
+  label="Onboarding progress"
+  items={[{ label: 'Understand', state: 'complete' }, { label: 'Compose', state: 'active' }, { label: 'Adapt', state: 'pending' }]}
+/>`,
+  };
+  if (examples[component]) return examples[component];
+  const required = (entry.props || []).filter((prop) => prop.required).map((prop) => `${prop.name}="Example value"`).join(' ');
+  return `<${component} ${required}>\n  <p>Replace this content with your product data.</p>\n</${component}>`;
+}
+
+function buildExampleCode(entry) {
+  const component = entry.exportName || pascalCase(entry.name);
+  return `import React from 'react';
+import { ${component} } from './library';
+
+export default function Example() {
+  return (
+    ${exampleUsage(entry)}
+  );
+}`;
+}
+
 const make = (entry) => ({
   ...shared,
   ...entry,
@@ -15,8 +105,14 @@ const make = (entry) => ({
   config: entry.config || {},
   customization: entry.customization || [],
   testPath: `src/library/__tests__/${entry.id}.test.jsx`,
-  exportCode: entry.exportCode || `import { ${entry.exportName || entry.name} } from './library';`,
-  mainJsxCode: entry.mainJsxCode || `<${entry.exportName || entry.name} {...config} />`,
+  exportCode: entry.exportCode || buildExampleCode(entry),
+  mainJsxCode: entry.mainJsxCode || `import { ${entry.exportName || pascalCase(entry.name)} } from './library';
+
+export default function App() {
+  return (
+    ${exampleUsage(entry)}
+  );
+}`,
 });
 
 export const IMPORTED_COMPONENT_DESCRIPTORS = [

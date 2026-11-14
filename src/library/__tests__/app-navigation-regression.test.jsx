@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import App from '../../App';
 import { COMPONENT_REGISTRY } from '../../library/docs/registry';
+import { IMPORTED_COMPONENT_DESCRIPTORS } from '../../library/docs/importedRegistry';
 import ComponentViewer from '../../showcase/components/ComponentViewer';
 
 vi.mock('../../showcase/components/LivePreviewContainer', () => ({
@@ -71,6 +72,12 @@ describe('App onboarding and navigation regressions', () => {
 });
 
 describe('ComponentViewer tab switching regressions', () => {
+  it('provides copy-ready examples for imported components', () => {
+    const statusBadge = IMPORTED_COMPONENT_DESCRIPTORS.find((item) => item.id === 'status-badge');
+    expect(statusBadge.exportCode).toContain('<StatusBadge status="success" tone="success" />');
+    expect(statusBadge.mainJsxCode).toContain('StatusBadge');
+  });
+
   it('switches the active tab and panel while preserving tab semantics', () => {
     render(<ComponentViewer component={component} />);
 
