@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14",
+  "generatedAt": "2026-11-19",
   "policy": "Source applications remain unchanged. Imported components are normalized to React 19 and Tailwind conventions.",
   "entries": [
     { "id": "button", "sourceProject": "phekong-commerce-platform", "sourcePath": "src/components/ui/Button.tsx", "adaptation": "Removed project CSS and converted variants to library Tailwind tokens." },
@@ -16,15 +16,25 @@
     { "id": "command-palette", "sourceProject": "Sankofa_Edu_Labs_Computer_Mastery", "sourcePath": "src/components/CommandPalette.tsx", "adaptation": "Removed subject/auth dependencies; added generic item list and keyboard shortcut props." },
     { "id": "expandable-section", "sourceProject": "Sankofa_Edu_Labs_Computer_Mastery", "sourcePath": "src/components/ExpandableSection.tsx", "adaptation": "Retained native details disclosure and converted styling to library tokens." },
     { "id": "single-open-accordion", "sourceProject": "Sankofa_Edu_Labs_Computer_Mastery", "sourcePath": "src/components/SingleOpenAccordion.tsx", "adaptation": "Retained controlled single-open accessibility contract and normalized styling." },
-    { "id": "learner-progress-ribbon", "sourceProject": "Sankofa_Edu_Labs_Computer_Mastery", "sourcePath": "src/components/LearnerProgressRibbon.tsx", "adaptation": "Generalized learner-specific progress into a reusable labeled progress ribbon." }
+    { "id": "learner-progress-ribbon", "sourceProject": "Sankofa_Edu_Labs_Computer_Mastery", "sourcePath": "src/components/LearnerProgressRibbon.tsx", "adaptation": "Generalized learner-specific progress into a reusable labeled progress ribbon." },
+    { "id": "delivery-process-flow", "sourceProject": "sankofa-digital-za", "sourcePath": "docs/ux-ui-prototype.html", "adaptation": "Converted CSS-counter step flow into configurable React 19 sequential pipeline with deliverables list." },
+    { "id": "capability-grid", "sourceProject": "sankofa-digital-za", "sourcePath": "dist/ntula-otto-thoso.html", "adaptation": "Extracted systems capabilities cards into a responsive multi-column grid with mono badges." },
+    { "id": "principles-matrix", "sourceProject": "sankofa-digital-za", "sourcePath": "docs/ux-ui-prototype.html", "adaptation": "Standardized principles audit table with responsive horizontal overflow and high-contrast styling." },
+    { "id": "direct-contact-panel", "sourceProject": "sankofa-digital-za", "sourcePath": "docs/ux-ui-prototype.html", "adaptation": "Converted discovery contact section into standalone panel with mailto/WhatsApp actions and zero-tracking disclosure." },
+    { "id": "coverage-progress-card", "sourceProject": "sankofa-computelab", "sourcePath": "src/ui.jsx", "adaptation": "Converted CSS radial ring progress gauge into SVG-backed completion card with action pill buttons." },
+    { "id": "coursework-marks-planner", "sourceProject": "sankofa-computelab", "sourcePath": "src/learning.jsx", "adaptation": "Extracted coursework calculation model into interactive assessment planner with target projections." },
+    { "id": "diagnostic-assessment-card", "sourceProject": "sankofa-computelab", "sourcePath": "src/learning.jsx", "adaptation": "Converted formative diagnostic question into reusable calibration card with confidence rating and rationale reveal." },
+    { "id": "repair-studio-card", "sourceProject": "sankofa-computelab", "sourcePath": "src/learning.jsx", "adaptation": "Converted repair studio drill into self-contained accordion with criteria tally and changed-facts correction field." },
+    { "id": "workspace-action-strip", "sourceProject": "senatla-ops-internal-automation-solution", "sourcePath": "src/app/components/workspace-action-strip.component.ts", "adaptation": "Ported Angular next-safe-action banner to React 19 with accessible live-region status and tone styling." },
+    { "id": "operational-metric-strip", "sourceProject": "senatla-ops-internal-automation-solution", "sourcePath": "src/app/components/timesheet-summary.component.ts", "adaptation": "Ported Angular timesheet metrics summary into responsive 6-cell operational status strip." },
+    { "id": "interactive-stat-card", "sourceProject": "senatla-ops-internal-automation-solution", "sourcePath": "src/app/components/erp/erp-stat-card.component.ts", "adaptation": "Ported Angular ERP stat card to React 19 with drilldown indicators, status badge, and keyboard activation." }
   ],
   "duplicates": [
-    { "behavior": "Safety and commercial component variants", "projects": ["Umkhuseli_The_Protector", "Umk_Commercial", "Umk_Commercial_Lib-"], "decision": "Excluded from the 30-entry UI set because the variants contain domain-specific safety, service, and app-state logic." }
+    { "behavior": "Safety and commercial component variants", "projects": ["Umkhuseli_The_Protector", "Umk_Commercial", "Umk_Commercial_Lib-"], "decision": "Excluded from the UI set because the variants contain domain-specific safety, service, and app-state logic." }
   ],
   "platformSources": [
-    { "repository": "Sankofa-Digital-Studio/Umk_Commercial_Lib-", "classification": "ui-and-service-inventory", "decision": "Generalized UI and safe contracts only; emergency, evidence, duress, covert, and survivor-safety flows excluded." },
-    { "repository": "Sankofa-Digital-Studio/Umk_Commercial", "classification": "ui-and-workflow-inventory", "decision": "Reuse candidates reviewed for portability; product-specific commerce and safety flows remain outside generic packages." },
-    { "repository": "Sankofa-Digital-Studio/senatla-ops-internal-automation-solution", "classification": "workflow-and-backend-baseline", "decision": "Quality, hosted smoke, runtime configuration, export, OCR, and provisioning patterns adapted into platform references." },
-    { "repository": "Sankofa-Digital-Studio/golden-grace-legacy", "classification": "react-quality-baseline", "decision": "React/Vite quality gates, asset checks, validation, and release conventions used as compatibility references." }
+    { "repository": "sankofa-digital-za", "classification": "brand-and-editorial-baseline", "decision": "Extracted delivery pipeline, capability matrix, principles audit, and direct qualified contact patterns." },
+    { "repository": "sankofa-computelab", "classification": "edtech-and-learning-baseline", "decision": "Extracted coverage progress gauge, weighted coursework planner, calibrated diagnostic, and repair studio patterns." },
+    { "repository": "senatla-ops-internal-automation-solution", "classification": "workflow-and-backend-baseline", "decision": "Extracted workspace action strip, high-density metric summary strip, and interactive ERP stat card patterns." }
   ]
 }

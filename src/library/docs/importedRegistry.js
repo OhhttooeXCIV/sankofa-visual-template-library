@@ -80,6 +80,85 @@ function exampleUsage(entry) {
   label="Onboarding progress"
   items={[{ label: 'Understand', state: 'complete' }, { label: 'Compose', state: 'active' }, { label: 'Adapt', state: 'pending' }]}
 />`,
+    DeliveryProcessFlow: `<DeliveryProcessFlow
+  steps={[
+    { number: '01', title: 'Discover', description: 'Context and risk boundaries', deliverables: ['Context map', 'User interviews'] },
+    { number: '02', title: 'Define', description: 'Scope and acceptance evidence', deliverables: ['System design', 'Checklist'] },
+    { number: '03', title: 'Build', description: 'Tested working increments', deliverables: ['Automated tests', 'Releases'] },
+    { number: '04', title: 'Launch', description: 'Runbook and backlog priorities', deliverables: ['Runbook', 'Handover'] },
+  ]}
+/>`,
+    CapabilityGrid: `<CapabilityGrid
+  capabilities={[
+    { number: '01', title: 'Systems Analysis', description: 'Connects business goals with technical architecture.', tag: 'Analysis' },
+    { number: '02', title: 'Software Engineering', description: 'Modern front-end and full-stack solutions.', tag: 'Engineering' },
+  ]}
+/>`,
+    PrinciplesMatrix: `<PrinciplesMatrix
+  rows={[
+    { principle: 'Accessibility', decision: 'WCAG 2.2 AA target', verification: 'Keyboard, contrast, landmarks' },
+    { principle: 'Trust', decision: 'No synthetic proof', verification: 'Primary operational data' },
+  ]}
+/>`,
+    DirectContactPanel: `<DirectContactPanel
+  email="contact@example.co.za"
+  whatsappNumber="+27754654865"
+/>`,
+    CoverageProgressCard: `<CoverageProgressCard
+  title="Practice Coverage"
+  completed={18}
+  total={42}
+  actions={[{ label: 'Review weak areas' }]}
+/>`,
+    CourseworkMarksPlanner: `<CourseworkMarksPlanner
+  targetPercent={40}
+  tasks={[
+    { id: 'assign', label: 'Assignment', max: 100, weight: 20 },
+    { id: 'test1', label: 'Test 1', max: 50, weight: 30 },
+    { id: 'exam', label: 'Internal Exam', max: 100, weight: 50 },
+  ]}
+/>`,
+    DiagnosticAssessmentCard: `<DiagnosticAssessmentCard
+  question={{
+    id: 'sample',
+    prompt: 'Which method separates assumptions from calculation logic?',
+    options: ['Hardcoding inputs', 'Dynamic cell reference', 'Static comments'],
+    correct: 1,
+    rationale: 'Dynamic cell references keep formulas reactive to changes.',
+  }}
+/>`,
+    RepairStudioCard: `<RepairStudioCard
+  drill={{
+    id: 'sample',
+    topic: 'Financial formula adjustments',
+    question: 'How do you adjust annual rates for monthly compounding?',
+    rationale: 'Divide annual rate by 12 and multiply period by 12.',
+    criteria: ['Divided rate by 12', 'Multiplied period by 12'],
+  }}
+/>`,
+    WorkspaceActionStrip: `<WorkspaceActionStrip
+  title="Ready for supervisor sign-off"
+  detail="All records have been submitted and verified."
+  stateLabel="Pending Approval"
+  actionLabel="Sign Timesheet"
+  tone="warning"
+/>`,
+    OperationalMetricStrip: `<OperationalMetricStrip
+  metrics={[
+    { label: 'Completion', value: '92%', tone: 'accent' },
+    { label: 'Total Workers', value: 24, tone: 'neutral' },
+    { label: 'Present', value: 22, tone: 'success' },
+    { label: 'Absent', value: 1, tone: 'danger' },
+  ]}
+/>`,
+    InteractiveStatCard: `<InteractiveStatCard
+  title="Active Fleet Assets"
+  value="48 / 50"
+  subtext="2 vehicles in maintenance"
+  badge="96% Operational"
+  tone="accent"
+  onClick={() => console.log('clicked')}
+/>`,
   };
   if (examples[component]) return examples[component];
   const required = (entry.props || []).filter((prop) => prop.required).map((prop) => `${prop.name}="Example value"`).join(' ');
@@ -134,4 +213,186 @@ export const IMPORTED_COMPONENT_DESCRIPTORS = [
   make({ id: 'expandable-section', name: 'Expandable Section', exportName: 'ExpandableSection', category: 'Learning & Interaction', sourceProject: 'Sankofa_Edu_Labs_Computer_Mastery', sourcePath: 'src/components/ExpandableSection.tsx', tagline: 'Native details disclosure for progressive content reveal.', props: [{ name: 'title', type: 'string', default: '-', required: true }, { name: 'defaultOpen', type: 'boolean', default: 'false', required: false }], customization: ['Summary copy', 'Open state', 'Content slot'] }),
   make({ id: 'single-open-accordion', name: 'Single Open Accordion', exportName: 'SingleOpenAccordion', category: 'Learning & Interaction', sourceProject: 'Sankofa_Edu_Labs_Computer_Mastery', sourcePath: 'src/components/SingleOpenAccordion.tsx', tagline: 'Controlled accessible accordion that keeps at most one item open.', props: [{ name: 'items', type: 'AccordionItem[]', default: '[]', required: true }, { name: 'openItemId', type: 'string|null', default: 'null', required: true }, { name: 'onOpenItemChange', type: 'Function(id|null)', default: '-', required: true }], customization: ['Item labels and content', 'Open-state styling', 'Panel transitions'] }),
   make({ id: 'learner-progress-ribbon', name: 'Learner Progress Ribbon', exportName: 'LearnerProgressRibbon', category: 'Learning & Interaction', sourceProject: 'Sankofa_Edu_Labs_Computer_Mastery', sourcePath: 'src/components/LearnerProgressRibbon.tsx', tagline: 'Responsive step progress indicator with pending, active, and completed states.', props: [{ name: 'items', type: 'ProgressItem[]', default: '[]', required: true }, { name: 'label', type: 'string', default: "'Progress'", required: false }], customization: ['Step labels', 'Progress states', 'Section label'] }),
+
+  // Newly imported candidates from sankofa-digital-za
+  make({
+    id: 'delivery-process-flow',
+    name: 'Delivery Process Flow',
+    exportName: 'DeliveryProcessFlow',
+    category: 'Navigation & Shell',
+    sourceProject: 'sankofa-digital-za',
+    sourcePath: 'docs/ux-ui-prototype.html',
+    tagline: 'Sequential delivery pipeline with automatic counter indicators, responsive stacking, and deliverables breakdown.',
+    props: [
+      { name: 'steps', type: 'Step[]', default: '[]', required: true },
+      { name: 'className', type: 'string', default: "''", required: false },
+    ],
+    customization: ['Stage numbers & labels', 'Deliverables list', 'Step descriptions'],
+    explanation: 'Adapted from Sankofa Digital ZA’s delivery pipeline, organizing product release cycles into clear sequential stages.',
+  }),
+  make({
+    id: 'capability-grid',
+    name: 'Capability Grid',
+    exportName: 'CapabilityGrid',
+    category: 'Foundations',
+    sourceProject: 'sankofa-digital-za',
+    sourcePath: 'dist/ntula-otto-thoso.html',
+    tagline: 'Structured grid showcasing organizational or system capabilities with numeric markers and tags.',
+    props: [
+      { name: 'capabilities', type: 'Capability[]', default: '[]', required: true },
+      { name: 'columns', type: '2 | 3 | 4', default: '3', required: false },
+    ],
+    customization: ['Column span', 'Numeric prefix', 'Tag labels'],
+    explanation: 'Adapted from Sankofa Digital ZA professional profile to showcase architectural capabilities with high readability.',
+  }),
+  make({
+    id: 'principles-matrix',
+    name: 'Principles Matrix',
+    exportName: 'PrinciplesMatrix',
+    category: 'Compliance & Legal',
+    sourceProject: 'sankofa-digital-za',
+    sourcePath: 'docs/ux-ui-prototype.html',
+    tagline: 'Accessible verification table mapping design principles directly to architecture decisions and release criteria.',
+    props: [
+      { name: 'rows', type: 'Row[]', default: '[]', required: true },
+      { name: 'title', type: 'string', default: 'undefined', required: false },
+    ],
+    customization: ['Principle columns', 'Verification criteria', 'Horizontal scroll wrapping'],
+    explanation: 'Adapted from Sankofa Digital ZA release checks for auditability and WCAG AA verification.',
+  }),
+  make({
+    id: 'direct-contact-panel',
+    name: 'Direct Contact Panel',
+    exportName: 'DirectContactPanel',
+    category: 'Forms & Overlays',
+    sourceProject: 'sankofa-digital-za',
+    sourcePath: 'docs/ux-ui-prototype.html',
+    tagline: 'Qualified enquiry card featuring prefilled email and WhatsApp direct action channels with zero-tracking disclosure.',
+    props: [
+      { name: 'email', type: 'string', default: '-', required: true },
+      { name: 'whatsappNumber', type: 'string', default: 'undefined', required: false },
+      { name: 'privacyNote', type: 'string', default: 'undefined', required: false },
+    ],
+    customization: ['Email subject line', 'WhatsApp prefilled text', 'Zero-data disclosure copy'],
+    explanation: 'Adapted from Sankofa Digital ZA discovery section to enable low-friction, privacy-respecting client communication.',
+  }),
+
+  // Newly imported candidates from sankofa-computelab
+  make({
+    id: 'coverage-progress-card',
+    name: 'Coverage Progress Card',
+    exportName: 'CoverageProgressCard',
+    category: 'Learning & Interaction',
+    sourceProject: 'sankofa-computelab',
+    sourcePath: 'src/ui.jsx',
+    tagline: 'Visual completion ring gauge showing task coverage percent, touched metrics, and quick action links.',
+    props: [
+      { name: 'title', type: 'string', default: "'Practice Coverage'", required: false },
+      { name: 'completed', type: 'number', default: '0', required: true },
+      { name: 'total', type: 'number', default: '0', required: true },
+      { name: 'actions', type: 'Action[]', default: '[]', required: false },
+    ],
+    customization: ['Ring gauge color', 'Target metrics', 'Action links with counter pills'],
+    explanation: 'Adapted from Sankofa ComputeLab to represent learner or process coverage with high visual impact.',
+  }),
+  make({
+    id: 'coursework-marks-planner',
+    name: 'Coursework Marks Planner',
+    exportName: 'CourseworkMarksPlanner',
+    category: 'Learning & Interaction',
+    sourceProject: 'sankofa-computelab',
+    sourcePath: 'src/learning.jsx',
+    tagline: 'Interactive weighted assessment planner calculating secured points and projecting target exam marks needed.',
+    props: [
+      { name: 'tasks', type: 'Task[]', default: '[]', required: true },
+      { name: 'targetPercent', type: 'number', default: '40', required: false },
+      { name: 'onValuesChange', type: 'Function(values)', default: 'noop', required: false },
+    ],
+    customization: ['Assessment tasks & weightings', 'Passing target threshold', 'Real-time projection callout'],
+    explanation: 'Adapted from Sankofa ComputeLab N5 coursework model for TVET and academic planning.',
+  }),
+  make({
+    id: 'diagnostic-assessment-card',
+    name: 'Diagnostic Assessment Card',
+    exportName: 'DiagnosticAssessmentCard',
+    category: 'Learning & Interaction',
+    sourceProject: 'sankofa-computelab',
+    sourcePath: 'src/learning.jsx',
+    tagline: 'Formative multiple-choice question with confidence rating calibration and detailed rationale reveals.',
+    props: [
+      { name: 'question', type: 'Question', default: '-', required: true },
+      { name: 'onComplete', type: 'Function(result)', default: 'noop', required: false },
+    ],
+    customization: ['Question choices', 'Confidence categories', 'Overconfidence detection alert'],
+    explanation: 'Adapted from Sankofa ComputeLab formative assessment flow to diagnose understanding without guesswork.',
+  }),
+  make({
+    id: 'repair-studio-card',
+    name: 'Repair Studio Card',
+    exportName: 'RepairStudioCard',
+    category: 'Learning & Interaction',
+    sourceProject: 'sankofa-computelab',
+    sourcePath: 'src/learning.jsx',
+    tagline: 'Guided self-assessment drill featuring learner explanation, criteria checklist tally, and changed-facts correction reflection.',
+    props: [
+      { name: 'drill', type: 'Drill', default: '-', required: true },
+      { name: 'onSaveCorrection', type: 'Function(data)', default: 'noop', required: false },
+    ],
+    customization: ['Drill criteria points', 'Self-check score counter', 'Changed-facts reflection field'],
+    explanation: 'Adapted from Sankofa ComputeLab repair studio for evidence-based metacognitive learning and review.',
+  }),
+
+  // Newly imported candidates from senatla-ops-internal-automation-solution
+  make({
+    id: 'workspace-action-strip',
+    name: 'Workspace Action Strip',
+    exportName: 'WorkspaceActionStrip',
+    category: 'Operations & Feedback',
+    sourceProject: 'senatla-ops-internal-automation-solution',
+    sourcePath: 'src/app/components/workspace-action-strip.component.ts',
+    tagline: 'Banner guiding operators to the next safe action with status badge, tone border, and live-region announcement.',
+    props: [
+      { name: 'title', type: 'string', default: '-', required: true },
+      { name: 'detail', type: 'string', default: '-', required: true },
+      { name: 'stateLabel', type: 'string', default: '-', required: true },
+      { name: 'actionLabel', type: 'string', default: '-', required: true },
+      { name: 'tone', type: "'neutral'|'success'|'warning'|'danger'", default: "'neutral'", required: false },
+    ],
+    customization: ['Status tone colors', 'Action callback', 'Live region role'],
+    explanation: 'Adapted from Senatla Ops to guide operators unambiguously toward the next valid workflow step.',
+  }),
+  make({
+    id: 'operational-metric-strip',
+    name: 'Operational Metric Strip',
+    exportName: 'OperationalMetricStrip',
+    category: 'Operations & Feedback',
+    sourceProject: 'senatla-ops-internal-automation-solution',
+    sourcePath: 'src/app/components/timesheet-summary.component.ts',
+    tagline: 'High-density multi-metric operational strip with responsive grid and tone-colored values.',
+    props: [
+      { name: 'metrics', type: 'Metric[]', default: '[]', required: true },
+      { name: 'compact', type: 'boolean', default: 'false', required: false },
+    ],
+    customization: ['Metric labels & tone mappings', 'Density compactness', 'Grid responsive breakpoints'],
+    explanation: 'Adapted from Senatla Ops timesheet summary to surface operational telemetry at a glance.',
+  }),
+  make({
+    id: 'interactive-stat-card',
+    name: 'Interactive Stat Card',
+    exportName: 'InteractiveStatCard',
+    category: 'Operations & Feedback',
+    sourceProject: 'senatla-ops-internal-automation-solution',
+    sourcePath: 'src/app/components/erp/erp-stat-card.component.ts',
+    tagline: 'Interactive KPI stat card with drilldown cue, status badge, tone border, and accessible keyboard activation.',
+    props: [
+      { name: 'title', type: 'string', default: '-', required: true },
+      { name: 'value', type: 'string | number', default: '-', required: true },
+      { name: 'subtext', type: 'string', default: 'undefined', required: false },
+      { name: 'badge', type: 'string', default: 'undefined', required: false },
+      { name: 'tone', type: "'default'|'accent'|'success'|'warning'|'danger'", default: "'accent'", required: false },
+      { name: 'interactive', type: 'boolean', default: 'true', required: false },
+    ],
+    customization: ['Tone color styling', 'Drilldown link hint', 'Keyboard Enter/Space trigger'],
+    explanation: 'Adapted from Senatla Ops ERP stat card for high-density dashboard monitoring and drilldowns.',
+  }),
 ];

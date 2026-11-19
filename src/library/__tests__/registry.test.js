@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { COMPONENT_REGISTRY } from '../docs/registry';
 
 describe('component registry', () => {
-  it('contains exactly 30 showcase entries', () => {
-    expect(COMPONENT_REGISTRY).toHaveLength(30);
-    expect(new Set(COMPONENT_REGISTRY.map((entry) => entry.id)).size).toBe(30);
+  it('contains exactly 47 showcase entries', () => {
+    expect(COMPONENT_REGISTRY).toHaveLength(47);
+    expect(new Set(COMPONENT_REGISTRY.map((entry) => entry.id)).size).toBe(47);
   });
 
   it('has complete descriptors for every entry', () => {

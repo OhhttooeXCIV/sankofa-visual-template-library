@@ -1,1 +1,1 @@
-
+export { DirectContactPanel } from './DirectContactPanel';

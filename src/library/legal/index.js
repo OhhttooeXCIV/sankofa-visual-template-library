@@ -10,3 +10,4 @@ export {
   ComplianceDisclaimer,
   PolicyCustomizer,
 } from './legalPolicy';
+export { PrinciplesMatrix } from './PrinciplesMatrix';
