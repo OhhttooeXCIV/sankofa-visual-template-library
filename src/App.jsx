@@ -9,6 +9,7 @@ import { OfflineSaveButton } from './library/offline/OfflineSaveButton';
 import { COMPONENT_REGISTRY } from './library/docs/registry';
 import { destinations, followRoute, routeHref, useShowcaseNavigation } from './showcase/navigation';
 import { useOfflineCatalogue } from './showcase/offline/useOfflineCatalogue';
+import MemberPortal from './member/MemberPortal';
 
 const categories = ['All', ...new Set(COMPONENT_REGISTRY.map((component) => component.category))];
 const actionClass = 'min-h-11 rounded-lg px-3 py-2 text-sm font-semibold text-amber-300 hover:bg-slate-800';
@@ -111,6 +112,16 @@ export function App() {
           </div>
         </section>}
 
+        {activeView === 'member' && <MemberPortal />}
+
+        {/* Main Showcase Workspace */}
+        {activeView === 'library' && <div id="component-library" className="flex-1 max-w-7xl w-full mx-auto flex flex-col lg:flex-row overflow-hidden">
+        {/* Left Category Sidebar */}
+        <Sidebar
+          components={filteredComponents}
+          selectedId={activeComponent?.id}
+          onSelectComponent={setSelectedId}
+        />
 
           {catalogueView && !component && <section aria-labelledby="catalogue-heading">
             <div className="grid gap-4 px-4 pt-6">

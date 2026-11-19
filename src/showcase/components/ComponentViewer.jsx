@@ -17,6 +17,15 @@ export const ComponentViewer = ({ component, tab, onSelectTab, offline = false, 
   if (!component) return null;
   const guidance = componentGuidance(component);
   const copiedNotification = status === 'Copied!';
+  const useCases = Array.isArray(component.useCases) && component.useCases.length > 0
+    ? component.useCases
+    : ['Use this primitive as a portable building block and adapt its data, routing, and visual tokens to your product.'];
+
+  const handleCopyCode = (code) => {
+    navigator.clipboard.writeText(code);
+    setCopiedNotification(true);
+    setTimeout(() => setCopiedNotification(false), 2000);
+  };
 
   const tabs = [
     { id: 'preview', label: 'Live Preview', icon: <Eye size={15} /> },
@@ -182,6 +191,7 @@ export const ComponentViewer = ({ component, tab, onSelectTab, offline = false, 
             </h3>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {(component.useCases || []).map((uc, idx) => (
+              {useCases.map((uc, idx) => (
                 <li
                   key={idx}
                   className="flex items-start gap-3 p-4 rounded-2xl bg-slate-950/60 border border-slate-800/60"
