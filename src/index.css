@@ -37,12 +37,60 @@
   animation: shimmer 2s infinite linear;
 }
 
-html {
-  scroll-behavior: smooth;
+
+@layer components {
+  .sankofa-navigation {
+    @apply fixed inset-x-0 bottom-0 z-40 border-t border-slate-800 bg-slate-950 p-1;
+    padding-bottom: max(.25rem, env(safe-area-inset-bottom));
+  }
+  .sankofa-nav-clearance {
+    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
+  }
+  .sankofa-scroll-region {
+    @apply min-w-0 max-w-full overflow-x-auto;
+    overscroll-behavior-inline: contain;
+  }
+  @media (min-width: 768px) {
+    .sankofa-navigation {
+      @apply sticky top-4 border-0 p-0;
+    }
+    .sankofa-nav-clearance {
+      padding-bottom: 0;
+    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+  .sankofa-motion-scope *, .sankofa-motion-scope *::before, .sankofa-motion-scope *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+.sankofa-drawer-footer {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+.sankofa-reading-progress {
+  display: none;
+}
+
+@supports (animation-timeline: scroll(root block)) {
+  @media (prefers-reduced-motion: no-preference) {
+    .sankofa-reading-progress {
+      display: block;
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 45;
+      height: 2px;
+      background: #f59e0b;
+      transform-origin: left;
+      animation: sankofa-reading linear both;
+      animation-timeline: scroll(root block);
+    }
+    @keyframes sankofa-reading {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
   }
 }

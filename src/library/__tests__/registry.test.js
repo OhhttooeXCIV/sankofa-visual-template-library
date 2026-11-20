@@ -1,10 +1,13 @@
 import { describe, expect, it } from 'vitest';
+import { componentChecks } from '../../showcase/componentGuidance';
 import { COMPONENT_REGISTRY } from '../docs/registry';
 
 describe('component registry', () => {
-  it('contains exactly 47 showcase entries', () => {
-    expect(COMPONENT_REGISTRY).toHaveLength(47);
-    expect(new Set(COMPONENT_REGISTRY.map((entry) => entry.id)).size).toBe(47);
+  it('uses unique identifiers and has mobile and offline guidance for every entry', () => {
+    const ids = COMPONENT_REGISTRY.map((entry) => entry.id);
+    expect(ids).toHaveLength(52);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(Object.keys(componentChecks).sort()).toEqual([...ids].sort());
   });
 
   it('has complete descriptors for every entry', () => {

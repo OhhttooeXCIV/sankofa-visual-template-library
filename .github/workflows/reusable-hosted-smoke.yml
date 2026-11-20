@@ -16,4 +16,5 @@ jobs:
       - run: npm run build
       - name: Verify preview is reachable
         run: node -e "fetch(process.env.BASE_URL).then(r=>{if(!r.ok) process.exit(1)})"
-        env: { BASE_URL: ${{ inputs.base-url }} }
+        env:
+          BASE_URL: ${{ inputs.base-url }}

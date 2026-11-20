@@ -32,19 +32,19 @@ export const Breadcrumbs = ({
   };
 
   return (
-    <nav aria-label="Breadcrumb" className={`flex items-center overflow-x-auto py-2 text-xs sm:text-sm font-medium ${className}`}>
-      <ol className="flex items-center whitespace-nowrap min-w-0">
+    <nav aria-label="Breadcrumb" className={`min-w-0 py-2 text-xs sm:text-sm font-medium ${className}`}>
+      <ol className="flex flex-wrap items-center gap-y-1">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           const isFirst = index === 0;
 
           return (
-            <li key={index} className="flex items-center min-w-0">
+            <li key={index} className="flex max-w-full items-center min-w-0">
               {index > 0 && renderSeparator()}
               {isLast ? (
                 <span
                   aria-current="page"
-                  className="font-semibold text-amber-400 truncate max-w-[200px] sm:max-w-none"
+                  className="font-semibold text-amber-400 [overflow-wrap:anywhere]"
                 >
                   {item.label}
                 </span>
@@ -57,11 +57,11 @@ export const Breadcrumbs = ({
                       onNavigate(item);
                     }
                   }}
-                  className="flex items-center gap-1.5 text-slate-400 hover:text-amber-300 transition-colors duration-200"
+                  className="flex min-h-11 min-w-0 items-center gap-1.5 text-slate-400 hover:text-amber-300 transition-colors duration-200"
                 >
                   {isFirst && showHomeIcon && (item.icon || <Home size={14} className="flex-shrink-0" />)}
                   {!isFirst && item.icon && <span className="flex-shrink-0">{item.icon}</span>}
-                  <span className="truncate">{item.label}</span>
+                  <span className="[overflow-wrap:anywhere]">{item.label}</span>
                 </a>
               )}
             </li>

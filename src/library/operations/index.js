@@ -6,3 +6,4 @@ export { InlineFeedback } from './InlineFeedback';
 export { WorkspaceActionStrip } from './WorkspaceActionStrip';
 export { OperationalMetricStrip } from './OperationalMetricStrip';
 export { InteractiveStatCard } from './InteractiveStatCard';
+export { OfflineSyncStatus } from './OfflineSyncStatus';

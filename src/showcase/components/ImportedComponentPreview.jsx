@@ -70,7 +70,7 @@ export default function ImportedComponentPreview({ componentId }) {
       return (
         <div className="space-y-4">
           <p className="text-sm text-slate-400">Press Ctrl/⌘ + K to open the configurable command palette.</p>
-          <CommandPalette items={[{ label: 'Open dashboard', href: '#' }, { label: 'View settings', href: '#' }, { label: 'Review reports', href: '#' }]} />
+          <CommandPalette triggerLabel="Open commands" items={[{ label: 'Open dashboard', href: '#' }, { label: 'View settings', href: '#' }, { label: 'Review reports', href: '#' }]} />
         </div>
       );
     case 'action-feedback':
@@ -91,7 +91,7 @@ export default function ImportedComponentPreview({ componentId }) {
     case 'approved-image':
       return (
         <div className="grid gap-4 sm:grid-cols-2">
-          <ApprovedImage src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=600&q=80" alt="Honey jar" className="h-48 w-full rounded-2xl object-cover" />
+          <ApprovedImage src="/sankofa-digital-hero.webp" alt="Sankofa Digital emblem" className="h-48 w-full rounded-2xl object-cover" />
           <ApprovedImage src="/missing-image.jpg" alt="Fallback example" className="h-48 w-full" />
         </div>
       );

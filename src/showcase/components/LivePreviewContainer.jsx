@@ -17,6 +17,11 @@ import {
   RecipesPage,
   ReviewsPage,
   useScrollLock,
+  ResponsiveNavigation,
+  OfflineSaveButton,
+  OfflineSyncStatus,
+  Drawer,
+  LegalPolicyPage,
 } from '../../library/components';
 import { Play, Sparkles, Image, Bell, Layers, CheckCircle } from 'lucide-react';
 import ImportedComponentPreview from './ImportedComponentPreview';
@@ -33,6 +38,9 @@ export const LivePreviewContainer = ({ componentId }) => {
   const [impactCols, setImpactCols] = useState(4);
   const [productInStock, setProductInStock] = useState(true);
   const [isScrollLocked, setIsScrollLocked] = useState(false);
+  const [previewLink, setPreviewLink] = useState('#example-overview');
+  const [previewSaved, setPreviewSaved] = useState(false);
+  const [previewSync, setPreviewSync] = useState('queued');
 
   // Custom hook test
   useScrollLock(isScrollLocked);
@@ -82,10 +90,38 @@ export const LivePreviewContainer = ({ componentId }) => {
   };
 
   switch (componentId) {
+    case 'legal-policy-kit':
+      return <LegalPolicyPage config={{ projectName: 'Example storefront', companyName: 'Example Studio', contactEmail: 'hello@example.com', projectType: 'commerce' }} policyId="privacy" />;
+    case 'drawer':
+      return <div>
+        <button type="button" className="min-h-11 rounded-lg border border-slate-700 px-3" onClick={() => setIsModalOpen(true)}>Open drawer</button>
+        <Drawer title="Example filters" isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}
+          footer={<button type="button" className="min-h-11 rounded-lg bg-amber-400 px-4 text-slate-950" onClick={() => setIsModalOpen(false)}>Apply filters</button>}>
+          <p className="mb-4">Scroll to see every filter while the action stays visible.</p>
+          {Array.from({ length: 16 }, (_, index) => <label key={index} className="flex min-h-11 items-center gap-2"><input type="checkbox" /> Filter {index + 1}</label>)}
+        </Drawer>
+      </div>;
+    case 'application-shell':
+      return <div className="rounded-xl border border-slate-700 p-3">
+        <ResponsiveNavigation inline label="Example destinations"
+          links={[{ href: '#example-overview', label: 'Overview' }, { href: '#example-components', label: 'Components' }]}
+          activeHref={previewLink} onNavigate={(event, href) => { event.preventDefault(); setPreviewLink(href); }} />
+        <p className="mt-3 p-3 text-sm text-slate-300">{previewLink === '#example-overview' ? 'Overview content' : 'Component content'}</p>
+      </div>;
+    case 'responsive-navigation':
+      return <ResponsiveNavigation inline links={[{ href: '#example-overview', label: 'Overview' }, { href: '#example-components', label: 'Components' }]}
+        activeHref={previewLink} onNavigate={(event, href) => { event.preventDefault(); setPreviewLink(href); }} />;
+    case 'offline-save-button':
+      return <OfflineSaveButton saved={previewSaved} onToggle={() => setPreviewSaved(!previewSaved)} />;
+    case 'offline-sync-status':
+      return <div className="space-y-3">
+        <OfflineSyncStatus status={previewSync} pendingCount={previewSync === 'queued' ? 1 : 0} onRetry={() => setPreviewSync('sent')} />
+        <button type="button" onClick={() => setPreviewSync('queued')} className="min-h-11 rounded-lg border border-slate-700 px-3 text-sm">Reset demo</button>
+      </div>;
     case 'breadcrumbs':
       return (
         <div className="space-y-6">
-          <div className="flex items-center gap-2 pb-4 border-b border-slate-800 text-xs">
+          <div className="flex flex-wrap items-center gap-2 pb-4 border-b border-slate-800 text-xs">
             <span className="text-slate-400 font-medium">Separator Style:</span>
             {['chevron', 'slash', 'bullet'].map((sep) => (
               <button
@@ -263,7 +299,7 @@ export const LivePreviewContainer = ({ componentId }) => {
           </p>
           <div className="inline-block relative group cursor-pointer" onClick={() => setIsImageModalOpen(true)}>
             <img
-              src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=400&q=80"
+              src="/sankofa-digital-hero.webp"
               alt="Raw Honey"
               className="w-48 rounded-2xl border border-slate-700 shadow-xl group-hover:scale-105 transition-transform"
             />
@@ -342,7 +378,7 @@ export const LivePreviewContainer = ({ componentId }) => {
           </div>
 
           {/* Floating Toasts Viewport */}
-          <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+          <div className="fixed inset-x-3 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-50 flex flex-col items-end gap-3 md:bottom-6 md:right-6 md:left-auto">
             {activeToasts.map((toast) => (
               <Toast
                 key={toast.id}
@@ -361,7 +397,7 @@ export const LivePreviewContainer = ({ componentId }) => {
     case 'impact-tracker':
       return (
         <div className="space-y-6">
-          <div className="flex items-center gap-2 pb-4 border-b border-slate-800 text-xs">
+          <div className="flex flex-wrap items-center gap-2 pb-4 border-b border-slate-800 text-xs">
             <span className="text-slate-400 font-medium">Desktop Columns:</span>
             {[2, 3, 4].map((cols) => (
               <button

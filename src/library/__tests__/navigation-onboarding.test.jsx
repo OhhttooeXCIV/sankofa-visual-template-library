@@ -1,28 +1,28 @@
 import React from 'react';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import App from '../../App';
 
+beforeEach(() => {
+  history.replaceState({}, '', '/');
+  vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+});
+
 describe('developer onboarding and navigation', () => {
-  it('onboards developers before showing the component workspace', () => {
+  it('opens the catalogue from Overview', () => {
     render(<App />);
-
-    expect(screen.getByText('A shared shelf of interface patterns, not a single product.')).toBeInTheDocument();
-    expect(screen.queryByText('Interactive Playground')).not.toBeInTheDocument();
-
-    fireEvent.click(screen.getAllByRole('button', { name: 'Browse library' })[0]);
-
-    expect(screen.getByText('Interactive Playground')).toBeInTheDocument();
-    expect(screen.queryByText('A shared shelf of interface patterns, not a single product.')).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /a shared shelf/i })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('link', { name: 'Components', exact: true }));
+    expect(screen.getByRole('heading', { name: 'Components', exact: true })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Components', exact: true })).toHaveAttribute('aria-current', 'page');
   });
 
-  it('switches component detail tabs and renders the selected panel', () => {
+  it('documents the implementation and each component inside the app', () => {
     render(<App />);
-    fireEvent.click(screen.getAllByRole('button', { name: 'Browse library' })[0]);
-
-    fireEvent.click(screen.getByRole('tab', { name: /Overview & Use Cases/i }));
-
-    expect(screen.getByRole('tabpanel')).toHaveTextContent('Architectural Explanation & Philosophy');
-    expect(screen.queryByText('Interactive Playground')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('link', { name: 'Documentation', exact: true }));
+    expect(screen.getByRole('heading', { name: 'Mobile navigation and offline use' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Apply the pattern in Angular' })).toBeInTheDocument();
+    expect(screen.getByText('Component-by-component guidance')).toBeInTheDocument();
+    expect(screen.getByText(/stableOperationId/)).toBeInTheDocument();
   });
 });

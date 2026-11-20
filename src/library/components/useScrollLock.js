@@ -1,29 +1,23 @@
 import { useEffect } from 'react';
 
-/**
- * useScrollLock - Locks document body scrolling when active.
- * Prevents layout shift and background bounce on mobile & desktop overlays.
- * 
- * @param {boolean} isLocked - When true, body scrolling is locked.
- */
+let locks = 0;
+let restore;
+
 export function useScrollLock(isLocked) {
   useEffect(() => {
     if (!isLocked) return;
-
-    const originalOverflow = document.body.style.overflow;
-    const originalPaddingRight = document.body.style.paddingRight;
-    
-    // Calculate scrollbar width to prevent layout shift
-    const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
-    
-    document.body.style.overflow = 'hidden';
-    if (scrollBarWidth > 0) {
-      document.body.style.paddingRight = `${scrollBarWidth}px`;
+    const body = document.body;
+    if (locks++ === 0) {
+      const { overflow, paddingRight } = body.style;
+      const width = document.documentElement.clientWidth;
+      const gap = width ? Math.max(0, window.innerWidth - width) : 0;
+      const padding = parseFloat(getComputedStyle(body).paddingRight) || 0;
+      body.style.overflow = 'hidden';
+      if (gap) body.style.paddingRight = padding + gap + 'px';
+      restore = () => Object.assign(body.style, { overflow, paddingRight });
     }
-
     return () => {
-      document.body.style.overflow = originalOverflow;
-      document.body.style.paddingRight = originalPaddingRight;
+      if (--locks === 0) restore();
     };
   }, [isLocked]);
 }

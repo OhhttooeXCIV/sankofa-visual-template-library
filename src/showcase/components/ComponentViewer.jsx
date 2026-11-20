@@ -1,27 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import LivePreviewContainer from './LivePreviewContainer';
+import React, { lazy, Suspense, useId, useState } from 'react';
 import CodeBlock from './CodeBlock';
 import PropsTable from './PropsTable';
-import { BookOpen, Code2, Eye, Sliders, Check, Copy, ArrowRight, Lightbulb } from 'lucide-react';
+import { useCopyCode } from './useCopyCode';
+import { componentGuidance } from '../componentGuidance';
+import { BookOpen, Code2, Eye, Sliders, Check, Copy, Lightbulb } from 'lucide-react';
 
-export const ComponentViewer = ({ component }) => {
-  const [activeTab, setActiveTab] = useState('preview');
-  const [codeType, setCodeType] = useState('export'); // 'export' or 'main'
-  const [copiedNotification, setCopiedNotification] = useState(false);
+const LivePreviewContainer = lazy(() => import('./LivePreviewContainer'));
 
-  useEffect(() => {
-    setActiveTab('preview');
-    setCodeType('export');
-  }, [component?.id]);
-
-  if (!component) {
-    return (
-      <div className="flex-1 p-12 text-center text-slate-500">
-        Select a component from the left sidebar to explore.
-      </div>
-    );
-  }
-
+export const ComponentViewer = ({ component, tab, onSelectTab, offline = false, actions }) => {
+  const [localTab, setLocalTab] = useState('preview');
+  const [codeType, setCodeType] = useState('export');
+  const { status, copy } = useCopyCode();
+  const instance = useId();
+  const activeTab = tab ?? localTab;
+  const setActiveTab = onSelectTab ?? setLocalTab;
+  if (!component) return null;
+  const guidance = componentGuidance(component);
+  const copiedNotification = status === 'Copied!';
   const useCases = Array.isArray(component.useCases) && component.useCases.length > 0
     ? component.useCases
     : ['Use this primitive as a portable building block and adapt its data, routing, and visual tokens to your product.'];
@@ -39,17 +34,34 @@ export const ComponentViewer = ({ component }) => {
     { id: 'export', label: 'Export Code (Zero Friction)', icon: <Code2 size={15} /> },
   ];
 
+  function handleTabKey(event, index) {
+    let target;
+    if (event.key === 'ArrowRight') target = (index + 1) % tabs.length;
+    else if (event.key === 'ArrowLeft') target = (index + tabs.length - 1) % tabs.length;
+    else if (event.key === 'Home') target = 0;
+    else if (event.key === 'End') target = tabs.length - 1;
+    else return;
+    event.preventDefault();
+    event.currentTarget.parentElement.querySelectorAll('[role="tab"]')[target].focus();
+    setActiveTab(tabs[target].id);
+  }
+
+  function panelProps(id) {
+    return { id: instance + '-panel-' + id, role: 'tabpanel',
+      'aria-labelledby': instance + '-tab-' + id, tabIndex: 0 };
+  }
+
   return (
-    <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-8">
+    <article className="min-w-0 flex-1 p-4 sm:p-6 lg:p-8 space-y-8">
       {/* Component Header Card */}
-      <div className="relative p-6 sm:p-8 rounded-3xl bg-slate-900/60 border border-slate-800 shadow-xl backdrop-blur-md">
+      <div className="relative p-4 sm:p-8 rounded-3xl bg-slate-900/60 border border-slate-800 shadow-xl backdrop-blur-md">
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex flex-wrap items-center gap-2 mb-2">
               <span className="text-[11px] font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-0.5 rounded-full">
                 {component.category}
               </span>
-              <span className="text-xs text-slate-500 font-mono">
+              <span className="break-all text-xs text-slate-400 font-mono">
                 #{component.id}
               </span>
             </div>
@@ -62,10 +74,11 @@ export const ComponentViewer = ({ component }) => {
           </div>
 
           {/* Quick Copy Action */}
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            {actions}
             <button
-              onClick={() => handleCopyCode(component.exportCode)}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-all shadow-md shadow-amber-500/20 active:scale-95"
+              onClick={() => copy(component.exportCode)}
+              className="flex items-center gap-1.5 min-h-11 px-3.5 py-2 rounded-xl text-xs font-semibold bg-amber-500 hover:bg-amber-400 text-slate-950 transition-all shadow-md shadow-amber-500/20 active:scale-95"
             >
               {copiedNotification ? (
                 <>
@@ -79,20 +92,26 @@ export const ComponentViewer = ({ component }) => {
                 </>
               )}
             </button>
+            <p role="status" className={status && !copiedNotification ? 'basis-full text-sm text-slate-300' : 'sr-only'}>
+              {status && !copiedNotification ? <>{status} <button type="button" className="underline" onClick={() => setActiveTab('export')}>View code</button></> : status}
+            </p>
           </div>
         </div>
 
         {/* Tab Switcher Navigation */}
-        <div className="flex items-center gap-2 mt-8 pt-6 border-t border-slate-800/80 overflow-x-auto">
-          {tabs.map((tab) => (
+        <div role="tablist" aria-label="Component details" className="grid grid-cols-2 gap-2 mt-6 pt-4 border-t border-slate-800/80 sm:flex sm:flex-wrap">
+          {tabs.map((tab, index) => (
             <button
               key={tab.id}
               type="button"
               role="tab"
               aria-selected={activeTab === tab.id}
-              aria-controls={`component-panel-${tab.id}`}
+              id={instance + '-tab-' + tab.id}
+              aria-controls={instance + '-panel-' + tab.id}
+              tabIndex={activeTab === tab.id ? 0 : -1}
+              onKeyDown={(event) => handleTabKey(event, index)}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
+              className={`flex min-h-11 min-w-0 items-center gap-2 px-2 py-2 text-left rounded-xl text-xs font-semibold [overflow-wrap:anywhere] sm:px-4 transition-all ${
                 activeTab === tab.id
                   ? 'bg-amber-500 text-slate-950 shadow-sm'
                   : 'text-slate-400 hover:text-white hover:bg-slate-800/80'
@@ -107,19 +126,21 @@ export const ComponentViewer = ({ component }) => {
 
       {/* Tab Panels */}
       {activeTab === 'preview' && (
-        <div id="component-panel-preview" role="tabpanel" className="rounded-3xl border border-slate-800 bg-slate-900/40 p-6 sm:p-8 shadow-xl">
+        <div {...panelProps('preview')} className="rounded-3xl border border-slate-800 bg-slate-900/40 p-6 sm:p-8 shadow-xl">
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-800">
             <div>
               <h3 className="text-sm font-semibold text-white">Interactive Playground</h3>
               <p className="text-xs text-slate-400">Experience live interactions, state changes, and responsive behaviors.</p>
             </div>
           </div>
-          <LivePreviewContainer componentId={component.id} />
+          {offline && guidance.requiresNetwork ?
+            <p className="text-sm text-slate-300">This preview uses online media. The component documentation and export code are available offline.</p> :
+            <Suspense fallback={<p role="status">Loading preview…</p>}><LivePreviewContainer componentId={component.id} /></Suspense>}
         </div>
       )}
 
       {activeTab === 'explanation' && (
-        <div id="component-panel-explanation" role="tabpanel" className="space-y-6">
+        <div {...panelProps('explanation')} className="space-y-6">
           {/* Architectural Overview */}
           <div className="p-6 sm:p-8 rounded-3xl border border-slate-800 bg-slate-900/40 shadow-xl space-y-4">
             <h3 className="text-lg font-serif font-semibold text-white flex items-center gap-2">
@@ -156,6 +177,7 @@ export const ComponentViewer = ({ component }) => {
                 <div><dt className="text-slate-500">Responsive behavior</dt><dd className="mt-1 leading-relaxed text-slate-300">{component.responsiveBehavior}</dd></div>
                 <div><dt className="text-slate-500">Accessibility</dt><dd className="mt-1 leading-relaxed text-slate-300">{component.accessibility}</dd></div>
                 <div><dt className="text-slate-500">Preview controls</dt><dd className="mt-1 text-slate-300">{component.previewControls?.join(', ') || 'Default preview'}</dd></div>
+                <div><dt className="text-slate-400">Mobile and offline use</dt><dd className="mt-1 leading-relaxed text-slate-300">{guidance.description}</dd></div>
                 <div><dt className="text-slate-500">Test path</dt><dd className="mt-1 break-all font-mono text-slate-300">{component.testPath}</dd></div>
               </dl>
             </div>
@@ -185,7 +207,7 @@ export const ComponentViewer = ({ component }) => {
       )}
 
       {activeTab === 'props' && (
-        <div id="component-panel-props" role="tabpanel" className="space-y-6">
+        <div {...panelProps('props')} className="space-y-6">
           <div className="p-6 sm:p-8 rounded-3xl border border-slate-800 bg-slate-900/40 shadow-xl space-y-4">
             <h3 className="text-lg font-serif font-semibold text-white flex items-center gap-2">
               <Sliders size={18} className="text-amber-400" />
@@ -211,10 +233,11 @@ export const ComponentViewer = ({ component }) => {
       )}
 
       {activeTab === 'export' && (
-        <div id="component-panel-export" role="tabpanel" className="space-y-6">
+        <div {...panelProps('export')} className="space-y-6">
           {/* Sub Tab Buttons */}
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <button
+              aria-pressed={codeType === 'export'}
               onClick={() => setCodeType('export')}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition ${
                 codeType === 'export'
@@ -225,6 +248,7 @@ export const ComponentViewer = ({ component }) => {
               Standalone Component Code
             </button>
             <button
+              aria-pressed={codeType === 'main'}
               onClick={() => setCodeType('main')}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition ${
                 codeType === 'main'
@@ -242,7 +266,7 @@ export const ComponentViewer = ({ component }) => {
           />
         </div>
       )}
-    </main>
+    </article>
   );
 };
 

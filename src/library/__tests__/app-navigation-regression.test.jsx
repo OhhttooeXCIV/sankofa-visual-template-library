@@ -1,6 +1,6 @@
 import React from 'react';
-import { describe, expect, it, vi } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import App from '../../App';
 import { COMPONENT_REGISTRY } from '../../library/docs/registry';
 import { IMPORTED_COMPONENT_DESCRIPTORS } from '../../library/docs/importedRegistry';
@@ -31,6 +31,12 @@ const component = {
   testPath: 'src/library/__tests__/app-navigation-regression.test.jsx',
 };
 
+beforeEach(() => {
+  history.replaceState({}, '', '/');
+  vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+  Object.defineProperty(window, 'scrollY', { configurable: true, value: 0 });
+});
+
 describe('App onboarding and navigation regressions', () => {
   it('introduces the library and uses the WebP hero asset on the landing view', () => {
     render(<App />);
@@ -47,27 +53,32 @@ describe('App onboarding and navigation regressions', () => {
     );
   });
 
-  it('switches from the introduction to the component library through navigation', () => {
+  it('opens shared component and tab URLs', () => {
+    history.replaceState({}, '', '/?component=button&tab=export');
     render(<App />);
-
-    fireEvent.click(screen.getAllByRole('button', { name: 'Browse library' })[0]);
-
-    expect(screen.queryByRole('heading', { name: /build digital experiences/i })).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'All' })).toBeInTheDocument();
-    expect(screen.getByText(/interactive playground/i)).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: /export code/i })).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByRole('heading', { name: 'Button', exact: true })).toBeInTheDocument();
   });
 
-  it('applies a selected category before entering the library view', () => {
+  it('restores filtered results, scroll and focus on browser Back', async () => {
     render(<App />);
-
-    const category = COMPONENT_REGISTRY[0].category;
-    const categoryButton = screen.getByRole('button', { name: category, exact: true });
-
-    fireEvent.click(categoryButton);
-    fireEvent.click(screen.getAllByRole('button', { name: 'Browse library' })[0]);
-
-    expect(screen.getByRole('button', { name: category, exact: true })).toBeInTheDocument();
-    expect(screen.getAllByRole('button', { name: /browse library/i })[0]).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('link', { name: 'Components', exact: true }));
+    fireEvent.change(screen.getByLabelText('Category'), { target: { value: 'Foundations' } });
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'button' } });
+    await waitFor(() => expect(screen.queryByRole('link', { name: 'Feature Card' })).toBeNull());
+    const result = screen.getByRole('link', { name: 'Button', exact: true });
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 120 });
+    await act(async () => { fireEvent.click(result); });
+    fireEvent.click(screen.getByRole('tab', { name: /overview & use cases/i }));
+    expect(window.location.search).toContain('tab=explanation');
+    await act(async () => {
+      history.back();
+      await new Promise((resolve) => window.addEventListener('popstate', resolve, { once: true }));
+    });
+    expect(screen.getByRole('searchbox')).toHaveValue('button');
+    expect(screen.getByLabelText('Category')).toHaveValue('Foundations');
+    expect(screen.getByRole('link', { name: 'Button', exact: true })).toHaveFocus();
+    expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 120, behavior: 'instant' });
   });
 });
 
@@ -85,13 +96,15 @@ describe('ComponentViewer tab switching regressions', () => {
     const previewTab = screen.getByRole('tab', { name: /live preview/i });
 
     expect(previewTab).toHaveAttribute('aria-selected', 'true');
-    expect(screen.getByRole('tabpanel')).toHaveAttribute('id', 'component-panel-preview');
+    expect(screen.getByRole('tabpanel')).toHaveAttribute('id', previewTab.getAttribute('aria-controls'));
 
-    fireEvent.click(explanationTab);
+    previewTab.focus();
+    fireEvent.keyDown(previewTab, { key: 'ArrowRight' });
+    expect(explanationTab).toHaveFocus();
 
     expect(explanationTab).toHaveAttribute('aria-selected', 'true');
     expect(previewTab).toHaveAttribute('aria-selected', 'false');
-    expect(screen.getByRole('tabpanel')).toHaveAttribute('id', 'component-panel-explanation');
+    expect(screen.getByRole('tabpanel')).toHaveAttribute('id', explanationTab.getAttribute('aria-controls'));
     expect(screen.getByText(/this component explains the problem/i)).toBeInTheDocument();
     expect(screen.queryByTestId('live-preview')).not.toBeInTheDocument();
   });
